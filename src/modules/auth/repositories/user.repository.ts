@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { UserModel } from 'src/modules/auth/models/user.model';
 
 // This should be a real class/interface representing a user entity
 export type User = any;
@@ -18,6 +19,7 @@ export class UserRepository {
     },
   ];
 
+  async save(user: UserModel) {}
   async findOne(username: string): Promise<User | undefined> {
     return this.users.find((user) => user.username === username);
   }

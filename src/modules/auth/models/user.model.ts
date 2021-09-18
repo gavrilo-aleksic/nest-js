@@ -1,7 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class UserModel {
+  constructor(username: string, password: string) {
+    this.username = username;
+    this.encPassword = password;
+  }
   @PrimaryGeneratedColumn()
   public id?: string;
 
@@ -10,4 +20,10 @@ export class UserModel {
 
   @Column({ nullable: false })
   public encPassword: string;
+
+  @CreateDateColumn()
+  public createdAt: Date;
+
+  @UpdateDateColumn()
+  public updatedAt: Date;
 }
