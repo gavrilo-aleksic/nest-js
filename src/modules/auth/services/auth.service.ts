@@ -10,7 +10,7 @@ export class AuthService {
     return this.userRepository.create(user);
   }
 
-  async validateUser(username: string, pass: string): Promise<any> {
+  async validateUser(username: string, pass: string): Promise<Partial<UserModel>> {
     const user = await this.userRepository.findOne(username);
     if (user && user.encPassword === pass) {
       const { encPassword, ...result } = user;
