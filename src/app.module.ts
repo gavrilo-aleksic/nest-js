@@ -7,10 +7,12 @@ import { AppService } from './app.service';
 import { OrganizationModule } from './modules/organization/organization.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseSettings from './settings/database.settings';
+import { validateEnvironment } from './settings/environment.settings';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      validate: validateEnvironment,
       envFilePath: `${process.env.NODE_ENV}.env`.replace(' ', ''),
     }),
     TypeOrmModule.forRootAsync({
