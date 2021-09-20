@@ -43,3 +43,8 @@ export const validateEnvironment = (config: Record<string, unknown>) => {
   }
   return validatedConfig;
 };
+
+export const envFilePath = `${process.env.NODE_ENV || 'dev'}.env`.replace(
+  ' ',
+  '',
+);

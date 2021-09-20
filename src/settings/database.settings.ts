@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ENTITIES } from './entities';
 
 const databaseSettings = async (
   configService: ConfigService,
@@ -11,13 +12,13 @@ const databaseSettings = async (
     username: configService.get<string>('DATABASE_USERNAME'),
     password: configService.get<string>('DATABASE_PASSWORD'),
     database: configService.get<string>('DATABASE_NAME'),
-    entities: ['dist/modules/**/models/*.model{.ts,.js}'],
+    entities: ENTITIES,
     migrationsTableName: 'custom_migration_table',
     migrations: ['migration/*.ts'],
     cli: {
       migrationsDir: 'migration',
     },
-    logging: true,
+    logging: configService.get<string>('ENV') === 'test' ? false : true,
     synchronize: true,
   };
 };

@@ -7,13 +7,17 @@ import { AppService } from './app.service';
 import { OrganizationModule } from './modules/organization/organization.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseSettings from './settings/database.settings';
-import { validateEnvironment } from './settings/environment.settings';
+import {
+  envFilePath,
+  validateEnvironment,
+} from './settings/environment.settings';
+import { AttributeModule } from './modules/attributes/attribute.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       validate: validateEnvironment,
-      envFilePath: `${process.env.NODE_ENV}.env`.replace(' ', ''),
+      envFilePath: envFilePath,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -23,6 +27,7 @@ import { validateEnvironment } from './settings/environment.settings';
     AuthModule,
     HealthModule,
     OrganizationModule,
+    AttributeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

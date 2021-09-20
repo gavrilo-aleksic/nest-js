@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IJWT } from 'src/@types/api';
 import { UserRepository } from 'src/modules/auth/repositories/user.repository';
 import { OrganizationRepository } from 'src/modules/organization/repositories/organization.repository';
+import { Exceptions } from 'src/shared/errors/error-exceptions';
 import { hashPassword, validatePassword } from 'src/shared/utils/auth.utils';
 import { UpdateUserDTO, UserDTO } from '../models/user.dto';
 import { UserModel } from '../models/user.model';
@@ -20,7 +25,7 @@ export class AuthService {
       user.username,
     );
     if (existingUser) {
-      throw new NotFoundException();
+      throw Exceptions.auth.NameTakenException(user.username);
     }
     const encPassword = hashPassword(user.password);
     const newUser = new UserModel(user.username, encPassword);

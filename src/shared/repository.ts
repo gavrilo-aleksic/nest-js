@@ -12,6 +12,10 @@ export class Repository<EntityType = any> {
     return getManager().getRepository<EntityType>(this.entity);
   }
 
+  async query(query: string) {
+    return (await this.getRepository()).query(query);
+  }
+
   async save(entity: EntityType) {
     return (await this.getRepository()).save(entity);
   }

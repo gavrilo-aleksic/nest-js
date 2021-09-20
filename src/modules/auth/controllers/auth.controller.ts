@@ -12,27 +12,28 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { IRequest } from 'src/@types/api';
 import { UserModel } from 'src/modules/auth/models/user.model';
+import { Routes } from 'src/routes';
 import { UpdateUserDTO, UserDTO } from '../models/user.dto';
 import { AuthService } from '../services/auth.service';
 
-@Controller({ path: 'auth' })
+@Controller({ path: Routes.auth.root })
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @UseInterceptors(ClassSerializerInterceptor)
-  @Post('create')
+  @Post(Routes.auth.register)
   async createUser(@Body() user: UserDTO): Promise<UserModel> {
     return this.authService.createUser(user);
   }
 
   @UseGuards(AuthGuard('local'))
-  @Post('login')
+  @Post(Routes.auth.login)
   async login(@Request() request: any) {
     return this.authService.login(request.user);
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('me')
+  @Get(Routes.auth.profile)
   async getMe(@Request() request: any) {
     return request.user;
   }

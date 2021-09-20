@@ -33,10 +33,10 @@ export class UserModel {
   @UpdateDateColumn()
   public updatedAt?: Date;
 
-  @ManyToOne(() => OrganizationModel, { eager: true })
+  @ManyToOne(() => OrganizationModel, { eager: true, nullable: true })
   public selectedOrganization?: OrganizationModel;
 
-  public selectedOrganizationId: number;
+  public selectedOrganizationId?: number;
 
   @ManyToMany((type) => OrganizationModel)
   @JoinTable({
