@@ -11,4 +11,8 @@ export class UserRepository extends Repository<UserModel> {
   async findByUsername(username: string): Promise<UserModel | undefined> {
     return (await this.getRepository()).findOne({ username });
   }
+
+  async getOne(id: number): Promise<UserModel | undefined> {
+    return (await this.getRepository()).findOne({ id });
+  }
 }

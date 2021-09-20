@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { OrganizationModel } from 'src/modules/organization/models/organization.model';
 import {
   Column,
@@ -23,6 +24,7 @@ export class UserModel {
   public username: string;
 
   @Column({ nullable: false })
+  @Exclude()
   public encPassword: string;
 
   @CreateDateColumn()
@@ -33,6 +35,8 @@ export class UserModel {
 
   @ManyToOne(() => OrganizationModel, { eager: true })
   public selectedOrganization?: OrganizationModel;
+
+  public selectedOrganizationId: number;
 
   @ManyToMany((type) => OrganizationModel)
   @JoinTable({

@@ -15,7 +15,7 @@ export class OrganizationRepository extends Repository<OrganizationModel> {
       .getMany();
   }
 
-  async getOne(id: number, userId: number) {
+  async getOne(id: number, userId?: number) {
     return (await this.getRepository())
       .createQueryBuilder('organization')
       .innerJoin(

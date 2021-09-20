@@ -1,18 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { IJWT } from 'src/@types/api';
 import { UserRepository } from 'src/modules/auth/repositories/user.repository';
+import { OrganizationRepository } from 'src/modules/organization/repositories/organization.repository';
 import { hashPassword, validatePassword } from 'src/shared/utils/auth.utils';
-import { UserDTO } from '../models/user.dto';
+import { IApiUser } from '../auth.types';
+import { UpdateUserDTO, UserDTO } from '../models/user.dto';
 import { UserModel } from '../models/user.model';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userRepository: UserRepository,
+    private organizationRepository: OrganizationRepository,
     private jwtService: JwtService,
   ) {}
 
   async createUser(user: UserDTO) {
+    const existingUser = await this.userRepository.findByUsername(
+      user.username,
+    );
+    if (existingUser) {
+      throw new NotFoundException();
+    }
     const encPassword = hashPassword(user.password);
     const newUser = new UserModel(user.username, encPassword);
     return this.userRepository.save(newUser);
@@ -31,7 +41,7 @@ export class AuthService {
   }
 
   async login(user: UserModel) {
-    const payload = {
+    const payload: IJWT = {
       username: user.username,
       sub: user.id,
       selectedOrganizationId: user.selectedOrganization.id,
@@ -39,5 +49,32 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async updateUser(user: UpdateUserDTO, currentUser: IApiUser) {
+    const userId = user.userId || currentUser.userId;
+    const existingUser = await this.userRepository.getOne(userId);
+
+    if (!existingUser) {
+      throw new NotFoundException();
+    }
+
+    if (user.password) {
+      existingUser.encPassword = hashPassword(user.password);
+    }
+
+    if (user.currentOrganizationId) {
+      const existingOrganization = await this.organizationRepository.getOne(
+        user.currentOrganizationId,
+        userId,
+      );
+
+      if (!existingOrganization) {
+        throw new NotFoundException();
+      }
+      existingUser.selectedOrganizationId = user.currentOrganizationId;
+    }
+    await this.userRepository.save(existingUser);
+    return existingUser;
   }
 }
