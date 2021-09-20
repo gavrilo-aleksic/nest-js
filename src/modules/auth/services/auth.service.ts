@@ -4,7 +4,6 @@ import { IJWT } from 'src/@types/api';
 import { UserRepository } from 'src/modules/auth/repositories/user.repository';
 import { OrganizationRepository } from 'src/modules/organization/repositories/organization.repository';
 import { hashPassword, validatePassword } from 'src/shared/utils/auth.utils';
-import { IApiUser } from '../auth.types';
 import { UpdateUserDTO, UserDTO } from '../models/user.dto';
 import { UserModel } from '../models/user.model';
 
@@ -51,8 +50,8 @@ export class AuthService {
     };
   }
 
-  async updateUser(user: UpdateUserDTO, currentUser: IApiUser) {
-    const userId = user.userId || currentUser.userId;
+  async updateUser(user: UpdateUserDTO, currentUser: IJWT) {
+    const userId = user.userId || currentUser.sub;
     const existingUser = await this.userRepository.getOne(userId);
 
     if (!existingUser) {

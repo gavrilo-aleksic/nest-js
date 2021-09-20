@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IApiUser } from 'src/modules/auth/auth.types';
+import { IJWT } from 'src/@types/api';
 import { OrganizationPostDTO } from '../models/organization.dto';
 import { OrganizationModel } from '../models/organization.model';
 import { OrganizationRepository } from '../repositories/organization.repository';
@@ -8,8 +8,8 @@ import { OrganizationRepository } from '../repositories/organization.repository'
 export class OrganizationService {
   constructor(private organizationRepository: OrganizationRepository) {}
 
-  async getAll(user: IApiUser) {
-    return this.organizationRepository.getAll(user.userId);
+  async getAll(userId: number) {
+    return this.organizationRepository.getAll(userId);
   }
 
   async getOne(id: number, userId: number) {

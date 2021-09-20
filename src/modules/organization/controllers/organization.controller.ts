@@ -34,11 +34,7 @@ export class OrganizationController {
     @Param('id', ParseIntPipe) id: number,
     @Request() request: IRequest,
   ) {
-    return this.organizationService.update(
-      id,
-      request.user.userId,
-      organization,
-    );
+    return this.organizationService.update(id, request.user.sub, organization);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -47,12 +43,12 @@ export class OrganizationController {
     @Param('id', ParseIntPipe) id: number,
     @Request() request: IRequest,
   ) {
-    return this.organizationService.getOne(id, request.user.userId);
+    return this.organizationService.getOne(id, request.user.sub);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
   async getOrganizations(@Request() request: IRequest) {
-    return this.organizationService.getAll(request.user);
+    return this.organizationService.getAll(request.user.sub);
   }
 }

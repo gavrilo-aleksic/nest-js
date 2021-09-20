@@ -5,12 +5,19 @@ import { HealthModule } from 'src/modules/health/health.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OrganizationModule } from './modules/organization/organization.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import databaseSettings from './settings/database.settings';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: `${process.env.NODE_ENV}.env` }),
-    TypeOrmModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: `${process.env.NODE_ENV}.env`.replace(' ', ''),
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: databaseSettings,
+      inject: [ConfigService],
+    }),
     AuthModule,
     HealthModule,
     OrganizationModule,
