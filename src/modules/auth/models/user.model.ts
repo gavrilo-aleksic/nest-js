@@ -16,7 +16,7 @@ export class UserModel {
     this.encPassword = password;
   }
   @PrimaryGeneratedColumn()
-  public id?: string;
+  public id?: number;
 
   @Column({ nullable: false })
   public username: string;

@@ -1,8 +1,11 @@
+import { AttributeModel } from 'src/modules/attributes/models/attribute.model';
 import { OrganizationModel } from 'src/modules/organization/models/organization.model';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -27,4 +30,12 @@ export class EntityTypeModel {
 
   @ManyToOne(() => OrganizationModel, { nullable: false })
   public organization: OrganizationModel;
+
+  @ManyToMany((type) => AttributeModel, {eager: true})
+  @JoinTable({
+    name: 'entity_type_attribute',
+    joinColumn: { name: 'entity_type_id' },
+    inverseJoinColumn: { name: 'attribute_id' },
+  })
+  public attributes?: AttributeModel[];
 }

@@ -1,4 +1,4 @@
-export type IApiUser = Pick<
-  UserModel,
-  'id' | 'createdAt' | 'username' | 'updatedAt'
->;
+export type IApiUser = {
+  userId: number;
+  username: string;
+};

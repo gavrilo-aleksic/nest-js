@@ -15,7 +15,7 @@ export class OrganizationModel {
     this.name = name;
   }
   @PrimaryGeneratedColumn()
-  public id?: string;
+  public id?: number;
 
   @Column({ nullable: false })
   public name: string;
