@@ -10,5 +10,6 @@
   "migrations": ["migration/*.ts"],
   "cli": {
     "migrationsDir": "migration"
-  }
+  },
+  "synchronize": true
 }

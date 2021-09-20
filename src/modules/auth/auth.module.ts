@@ -7,11 +7,13 @@ import { JwtStrategy } from './services/jwt-auth.service';
 import { LocalStrategy } from './services/local-auth.service';
 
 @Module({
-  imports: [JwtModule.register({
-    secret: 'secret',
-    signOptions: {expiresIn: '60s'}
-  })],
+  imports: [
+    JwtModule.register({
+      secret: 'secret',
+      signOptions: { expiresIn: '60s' },
+    }),
+  ],
   controllers: [AuthController],
   providers: [AuthService, UserRepository, LocalStrategy, JwtStrategy],
 })
-export class AuthModule { }
+export class AuthModule {}

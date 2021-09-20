@@ -1,7 +1,10 @@
+import { OrganizationModel } from 'src/modules/organization/models/organization.model';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -26,4 +29,12 @@ export class UserModel {
 
   @UpdateDateColumn()
   public updatedAt: Date;
+
+  @ManyToMany((type) => OrganizationModel)
+  @JoinTable({
+    name: 'user_organization',
+    joinColumn: { name: 'user_id' },
+    inverseJoinColumn: { name: 'organization_id' },
+  })
+  public organizations?: OrganizationModel[];
 }

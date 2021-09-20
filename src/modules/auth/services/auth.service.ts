@@ -6,13 +6,19 @@ import { UserModel } from '../models/user.model';
 
 @Injectable()
 export class AuthService {
-  constructor(private userRepository: UserRepository, private jwtService: JwtService) { }
+  constructor(
+    private userRepository: UserRepository,
+    private jwtService: JwtService,
+  ) {}
 
   async createUser(user: UserModel) {
-    return this.userRepository.create(user);
+    return this.userRepository.save(user);
   }
 
-  async validateUser(username: string, pass: string): Promise<Partial<UserModel>> {
+  async validateUser(
+    username: string,
+    pass: string,
+  ): Promise<Partial<UserModel>> {
     const user = await this.userRepository.findByUsername(username);
     if (user && user.encPassword === pass) {
       const { encPassword, ...result } = user;
@@ -22,9 +28,9 @@ export class AuthService {
   }
 
   async login(user: IApiUser) {
-    const payload = {username: user.username, sub: user.id};
+    const payload = { username: user.username, sub: user.id };
     return {
-      access_token: this.jwtService.sign(payload)
-    } 
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

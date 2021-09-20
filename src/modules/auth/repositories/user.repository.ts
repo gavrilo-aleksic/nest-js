@@ -1,19 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { UserModel } from 'src/modules/auth/models/user.model';
-import { getManager } from 'typeorm';
+import { Repository } from 'src/shared/repository';
 
 @Injectable()
-export class UserRepository {
-
-  private async getRepository() {
-    return getManager().getRepository(UserModel)
-  };
-
-  async create(user: UserModel) {
-    return (await this.getRepository()).save(user)
+export class UserRepository extends Repository<UserModel> {
+  constructor() {
+    super(UserModel);
   }
 
   async findByUsername(username: string): Promise<UserModel | undefined> {
-    return  (await this.getRepository()).findOne({username});
+    return (await this.getRepository()).findOne({ username });
   }
 }

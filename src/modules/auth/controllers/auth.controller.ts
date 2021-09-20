@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { IRequest } from 'src/@types/api';
 import { UserModel } from 'src/modules/auth/models/user.model';
@@ -7,8 +14,7 @@ import { AuthService } from '../services/auth.service';
 
 @Controller({ path: 'auth' })
 export class AuthController {
-
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Post('create')
   async createUser(@Body() user: UserDTO): Promise<UserModel> {
