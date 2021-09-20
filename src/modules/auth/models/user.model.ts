@@ -5,6 +5,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,17 +19,20 @@ export class UserModel {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   public username: string;
 
   @Column({ nullable: false })
   public encPassword: string;
 
   @CreateDateColumn()
-  public createdAt: Date;
+  public createdAt?: Date;
 
   @UpdateDateColumn()
-  public updatedAt: Date;
+  public updatedAt?: Date;
+
+  @ManyToOne(() => OrganizationModel, { eager: true })
+  public selectedOrganization?: OrganizationModel;
 
   @ManyToMany((type) => OrganizationModel)
   @JoinTable({

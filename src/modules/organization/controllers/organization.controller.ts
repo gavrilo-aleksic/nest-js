@@ -2,8 +2,8 @@ import {
   Body,
   Controller,
   Get,
-  NotFoundException,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Request,
@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { IRequest } from 'src/@types/api';
-import { transformNumber } from 'src/shared/utils/transform.utils';
 import { OrganizationPostDTO } from '../models/organization.dto';
 import { OrganizationModel } from '../models/organization.model';
 import { OrganizationService } from '../services/organization.service';
@@ -32,12 +31,9 @@ export class OrganizationController {
   @Put(':id')
   async updateOrganization(
     @Body() organization: OrganizationPostDTO,
-    @Param('id', { transform: transformNumber }) id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Request() request: IRequest,
   ) {
-    if (!id) {
-      throw new NotFoundException();
-    }
     return this.organizationService.update(
       id,
       request.user.userId,
@@ -48,12 +44,9 @@ export class OrganizationController {
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   async getOrganization(
-    @Param('id', { transform: transformNumber }) id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Request() request: IRequest,
   ) {
-    if (!id) {
-      throw new NotFoundException();
-    }
     return this.organizationService.getOne(id, request.user.userId);
   }
 
