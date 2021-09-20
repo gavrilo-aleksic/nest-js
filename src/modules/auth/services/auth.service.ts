@@ -60,7 +60,7 @@ export class AuthService {
     const existingUser = await this.userRepository.getOne(userId);
 
     if (!existingUser) {
-      throw new NotFoundException();
+      throw Exceptions.auth.NotFoundException(userId);
     }
 
     if (user.password) {
@@ -74,11 +74,21 @@ export class AuthService {
       );
 
       if (!existingOrganization) {
-        throw new NotFoundException();
+        throw Exceptions.organization.NotFoundException(
+          user.currentOrganizationId,
+        );
       }
       existingUser.selectedOrganizationId = user.currentOrganizationId;
     }
     await this.userRepository.save(existingUser);
+    return existingUser;
+  }
+
+  async getUser(id: number) {
+    const existingUser = await this.userRepository.getOne(id);
+    if (!existingUser) {
+      throw Exceptions.auth.NotFoundException(id);
+    }
     return existingUser;
   }
 }

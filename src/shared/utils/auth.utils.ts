@@ -14,7 +14,6 @@ export const validatePassword = (input: string, originalPassword: string) => {
     hash += key.final('utf8');
     return hash === input;
   } catch (e) {
-    console.error(e);
     return false;
   }
 };

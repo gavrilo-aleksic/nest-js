@@ -20,7 +20,6 @@ import { AuthService } from '../services/auth.service';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post(Routes.auth.register)
   async createUser(@Body() user: UserDTO): Promise<UserModel> {
     return this.authService.createUser(user);
@@ -35,7 +34,7 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Get(Routes.auth.profile)
   async getMe(@Request() request: any) {
-    return request.user;
+    return this.authService.getUser(request.user.sub);
   }
 
   @UseGuards(AuthGuard('jwt'))
