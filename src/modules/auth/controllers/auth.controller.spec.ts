@@ -114,7 +114,7 @@ describe('Test Auth module', () => {
       expect(new_token).toBeDefined();
     });
 
-    it('Should throw error if organization does not exist', async () => {
+    it('Should throw error if current organization does not exist', async () => {
       const access_token = await getToken(app, 'test', 'test');
 
       await request(app.getHttpServer())
