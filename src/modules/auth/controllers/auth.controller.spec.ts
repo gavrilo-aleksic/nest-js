@@ -1,13 +1,4 @@
-import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import {
-  envFilePath,
-  validateEnvironment,
-} from '../../../settings/environment.settings';
-import databaseSettings from '../../../settings/database.settings';
-import { AuthModule } from '../auth.module';
+import { INestApplication } from '@nestjs/common';
 import { UserModel } from '../models/user.model';
 import { USER_DUMP } from 'src/dumps/db.dump';
 import * as request from 'supertest';
@@ -16,7 +7,6 @@ import { UpdateUserDTO, UserDTO } from '../models/user.dto';
 import { UserRepository } from '../repositories/user.repository';
 import { Repository } from 'src/shared/repository';
 import { createMockApp, getToken } from 'src/shared/utils/test.utils';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 
 describe('Test Auth module', () => {
   let app: INestApplication;
@@ -115,7 +105,7 @@ describe('Test Auth module', () => {
     it('Should update user password', async () => {
       const access_token = await getToken(app, 'test', 'test');
 
-      const { body } = await request(app.getHttpServer())
+      await request(app.getHttpServer())
         .put(`/${Routes.auth.root}`)
         .send({ password: 'newPassword' } as UpdateUserDTO)
         .set('Authorization', `Bearer ${access_token}`);
@@ -127,7 +117,7 @@ describe('Test Auth module', () => {
     it('Should throw error if organization does not exist', async () => {
       const access_token = await getToken(app, 'test', 'test');
 
-      const { body } = await request(app.getHttpServer())
+      await request(app.getHttpServer())
         .put(`/${Routes.auth.root}`)
         .send({ currentOrganizationId: 111 } as UpdateUserDTO)
         .set('Authorization', `Bearer ${access_token}`)

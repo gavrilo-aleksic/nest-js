@@ -38,7 +38,7 @@ export class UserModel {
 
   public selectedOrganizationId?: number;
 
-  @ManyToMany((type) => OrganizationModel)
+  @ManyToMany(() => OrganizationModel)
   @JoinTable({
     name: 'user_organization',
     joinColumn: { name: 'user_id' },

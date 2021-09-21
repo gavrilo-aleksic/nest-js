@@ -26,7 +26,7 @@ export class OrganizationModel {
   @UpdateDateColumn()
   public updatedAt: Date;
 
-  @ManyToMany((type) => UserModel)
+  @ManyToMany(() => UserModel)
   @JoinTable({
     name: 'user_organization',
     joinColumn: { name: 'organization_id' },

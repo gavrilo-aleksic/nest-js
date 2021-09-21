@@ -31,7 +31,7 @@ export class EntityTypeModel {
   @ManyToOne(() => OrganizationModel, { nullable: false })
   public organization: OrganizationModel;
 
-  @ManyToMany((type) => AttributeModel, {eager: true})
+  @ManyToMany(() => AttributeModel, { eager: true })
   @JoinTable({
     name: 'entity_type_attribute',
     joinColumn: { name: 'entity_type_id' },
