@@ -15,9 +15,10 @@ import { jwtServiceMockFactory } from 'src/test/mocks/services/jwt.service.mock'
 import { createMockUser } from 'src/test/mocks/models/user.mock';
 import { BadRequestException } from '@nestjs/common';
 
-describe('Test Auth Service', () => {
+describe('Test [AuthService]', () => {
   let authService: AuthService;
   let userRepository: UserRepository;
+  let jwtService: JwtService;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -46,9 +47,10 @@ describe('Test Auth Service', () => {
 
     authService = module.get(AuthService);
     userRepository = module.get(UserRepository);
+    jwtService = module.get(JwtService);
   });
 
-  describe('CreateUser', () => {
+  describe('[createUser]', () => {
     it('Should return valid user if provided unused username and password', async () => {
       const mockUser: UserDTO = {
         username: 'Some New User',
@@ -80,6 +82,37 @@ describe('Test Auth Service', () => {
           code: '10001',
         });
       }
+    });
+  });
+
+  describe('[validateUser]', () => {
+    it('should return user if user exists in database', async () => {
+      const result = await authService.validateUser('test', 'test');
+      expect(result.id).toBeDefined();
+    });
+
+    it('should return null if user does not exist', async () => {
+      userRepository.findByUsername = jest.fn(() => Promise.resolve(null));
+      const result = await authService.validateUser('test1', 'test');
+      expect(result).toBeNull();
+    });
+
+    it('should return null if password is invalid', async () => {
+      const result = await authService.validateUser('test', 'wrongpassword');
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('[createAccessToken]', () => {
+    it('Should call jwt service with correct fields', async () => {
+      const jwtSign = jest.spyOn(jwtService, 'sign');
+      const mockUser = createMockUser();
+      await authService.createAccessToken(mockUser);
+      expect(jwtSign).toHaveBeenCalledWith({
+        username: mockUser.username,
+        sub: mockUser.id,
+        selectedOrganizationId: mockUser.selectedOrganization?.id,
+      });
     });
   });
 });

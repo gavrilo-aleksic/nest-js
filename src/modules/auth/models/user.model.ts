@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -33,10 +34,11 @@ export class UserModel {
   @UpdateDateColumn()
   public updatedAt?: Date;
 
-  @ManyToOne(() => OrganizationModel, { eager: true, nullable: true })
+  @ManyToOne(() => OrganizationModel, {
+    eager: true,
+    nullable: true,
+  })
   public selectedOrganization?: OrganizationModel;
-
-  public selectedOrganizationId?: number;
 
   @ManyToMany(() => OrganizationModel)
   @JoinTable({

@@ -1,6 +1,6 @@
 import { getManager, Repository as TypeORMRepository } from 'typeorm';
 
-export class Repository<EntityType = any> {
+export class Repository<EntityType extends { id?: number; [k: string]: any }> {
   public entity: any;
   public repository: TypeORMRepository<EntityType>;
 
@@ -16,8 +16,12 @@ export class Repository<EntityType = any> {
     return (await this.getRepository()).query(query);
   }
 
-  async save(entity: EntityType) {
-    return (await this.getRepository()).save(entity);
+  async save(entity: Partial<EntityType>, withReload?: boolean) {
+    const updateResult = (await this.getRepository()).save(entity);
+    if (withReload) {
+      return (await this.getRepository()).findOne({ id: entity.id });
+    }
+    return updateResult;
   }
 
   async saveMany(entities: EntityType[]) {
@@ -25,16 +29,10 @@ export class Repository<EntityType = any> {
   }
 
   async update(entity: EntityType) {
-    //@ts-ignore
     return (await this.getRepository()).update(entity.id, entity);
   }
 
-  async deleteById(id: string, logical: boolean) {
-    if (logical) {
-      //@ts-ignore
-      return (await this.getRepository()).update(id, { deleted: 1 });
-    } else {
-      return (await this.getRepository()).delete(id);
-    }
+  async deleteById(id: string) {
+    return (await this.getRepository()).delete(id);
   }
 }

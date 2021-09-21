@@ -3,6 +3,6 @@ export const Routes = {
     root: 'auth',
     register: 'create',
     login: 'login',
-    profile: 'profile',
+    profile: 'profile/:id?',
   },
 };

@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { AttributeTypeEnum } from './attirubute-type.enum';
+import { AttributeTypeEnum } from './attribute-type.enum';
 
 @Entity()
 export class AttributeModel {
@@ -15,7 +15,7 @@ export class AttributeModel {
     this.name = name;
   }
   @PrimaryGeneratedColumn()
-  public id?: string;
+  public id?: number;
 
   @Column({ nullable: false })
   public name: string;

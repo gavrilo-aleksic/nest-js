@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Put,
   Request,
@@ -11,6 +12,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { IRequest } from 'src/@types/api';
 import { UserModel } from 'src/modules/auth/models/user.model';
 import { Routes } from 'src/routes';
+import { Exceptions } from 'src/shared/errors/error-exceptions';
 import { UpdateUserDTO, UserDTO } from '../models/user.dto';
 import { AuthService } from '../services/auth.service';
 
@@ -26,13 +28,16 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post(Routes.auth.login)
   async login(@Request() request: any) {
-    return this.authService.login(request.user);
+    return this.authService.createAccessToken(request.user);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get(Routes.auth.profile)
-  async getMe(@Request() request: any) {
-    return this.authService.getUser(request.user.sub);
+  async getMe(@Request() request: any, @Param('id') userId: number) {
+    if (userId !== undefined && isNaN(userId)) {
+      throw Exceptions.auth.InvalidUserIdParam(userId);
+    }
+    return this.authService.getUser(userId || request.user.sub);
   }
 
   @UseGuards(AuthGuard('jwt'))

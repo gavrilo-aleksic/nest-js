@@ -1,4 +1,10 @@
-import { IsDefined, IsInt, IsString } from 'class-validator';
+import {
+  IsDefined,
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UserDTO {
   @IsString()
@@ -12,12 +18,14 @@ export class UserDTO {
 
 export class UpdateUserDTO {
   @IsString()
-  @IsDefined()
+  @IsOptional()
   public password: string;
 
-  @IsInt()
-  public currentOrganizationId: number;
+  @IsNumber()
+  @IsOptional()
+  public selectedOrganizationId: number;
 
   @IsInt()
+  @IsOptional()
   public userId: number;
 }

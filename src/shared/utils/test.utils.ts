@@ -1,9 +1,13 @@
 import * as request from 'supertest';
 import { Routes } from 'src/routes';
-import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import databaseSettings from 'src/settings/database.settings';
@@ -30,6 +34,10 @@ export const createMockApp = async () =>
       {
         provide: APP_INTERCEPTOR,
         useClass: ClassSerializerInterceptor,
+      },
+      {
+        provide: APP_PIPE,
+        useFactory: () => new ValidationPipe({ whitelist: true }),
       },
     ],
   }).compile();

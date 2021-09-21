@@ -40,11 +40,11 @@ export class AuthService {
     return null;
   }
 
-  async login(user: UserModel) {
+  async createAccessToken(user: UserModel) {
     const payload: IJWT = {
       username: user.username,
       sub: user.id,
-      selectedOrganizationId: user.selectedOrganization.id,
+      selectedOrganizationId: user.selectedOrganization?.id,
     };
     return {
       access_token: this.jwtService.sign(payload),
@@ -63,20 +63,20 @@ export class AuthService {
       existingUser.encPassword = hashPassword(user.password);
     }
 
-    if (user.currentOrganizationId) {
+    if (user.selectedOrganizationId) {
       const existingOrganization = await this.organizationRepository.getOne(
-        user.currentOrganizationId,
+        user.selectedOrganizationId,
         userId,
       );
 
       if (!existingOrganization) {
         throw Exceptions.organization.NotFoundException(
-          user.currentOrganizationId,
+          user.selectedOrganizationId,
         );
       }
-      existingUser.selectedOrganizationId = user.currentOrganizationId;
+      existingUser.selectedOrganization = existingOrganization;
     }
-    await this.userRepository.save(existingUser);
+    const updatedUser = await this.userRepository.save(existingUser);
     return existingUser;
   }
 

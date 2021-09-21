@@ -71,7 +71,7 @@ describe('Test Auth module', () => {
     });
   });
 
-  describe('GET /profile', () => {
+  describe('GET /profile/:id?', () => {
     it('Should fail if token is invalid', async () => {
       await request(app.getHttpServer())
         .get(`/${Routes.auth.root}/${Routes.auth.profile}`)
@@ -83,7 +83,7 @@ describe('Test Auth module', () => {
       const access_token = await getToken(app, 'test', 'test');
 
       const { body } = await request(app.getHttpServer())
-        .get(`/${Routes.auth.root}/${Routes.auth.profile}`)
+        .get(`/${Routes.auth.root}/profile`)
         .send()
         .set('Authorization', `Bearer ${access_token}`);
       expect(body).toEqual({
@@ -99,6 +99,15 @@ describe('Test Auth module', () => {
         },
       });
     });
+
+    it('Should throw invalid request if :id param not integer', async () => {
+      const access_token = await getToken(app, 'test', 'test');
+      await request(app.getHttpServer())
+        .get(`/${Routes.auth.root}/profile/a`)
+        .send()
+        .set('Authorization', `Bearer ${access_token}`)
+        .expect(400);
+    });
   });
 
   describe('PUT /', () => {
@@ -109,19 +118,38 @@ describe('Test Auth module', () => {
         .put(`/${Routes.auth.root}`)
         .send({ password: 'newPassword' } as UpdateUserDTO)
         .set('Authorization', `Bearer ${access_token}`);
-
       const new_token = await getToken(app, 'test', 'newPassword');
       expect(new_token).toBeDefined();
     });
 
-    it('Should throw error if current organization does not exist', async () => {
+    it('Should throw error if organization does not exist', async () => {
       const access_token = await getToken(app, 'test', 'test');
 
       await request(app.getHttpServer())
         .put(`/${Routes.auth.root}`)
-        .send({ currentOrganizationId: 111 } as UpdateUserDTO)
+        .send({ selectedOrganizationId: 111 } as UpdateUserDTO)
         .set('Authorization', `Bearer ${access_token}`)
         .expect(404);
+    });
+
+    it('Should throw error if organization does not exist on user', async () => {
+      const access_token = await getToken(app, 'test', 'test');
+
+      await request(app.getHttpServer())
+        .put(`/${Routes.auth.root}`)
+        .send({ selectedOrganizationId: 2 } as UpdateUserDTO)
+        .set('Authorization', `Bearer ${access_token}`)
+        .expect(404);
+    });
+
+    it('Should update selected organization if organizationId exists on user', async () => {
+      const access_token = await getToken(app, 'test', 'test');
+
+      const { body } = await request(app.getHttpServer())
+        .put(`/${Routes.auth.root}`)
+        .send({ selectedOrganizationId: 3 } as UpdateUserDTO)
+        .set('Authorization', `Bearer ${access_token}`);
+      expect((<UserModel>body).selectedOrganization.id).toEqual(3);
     });
   });
 });

@@ -9,8 +9,13 @@ export const Exceptions = {
       }),
     NotFoundException: (id: number) =>
       new NotFoundException({
-        error: `User ${id} is does not exist`,
+        error: `User ${id} does not exist`,
         code: '10002',
+      }),
+    InvalidUserIdParam: (id: any) =>
+      new BadRequestException({
+        error: `User id provided ->  ${id} is not valid ID`,
+        code: '10003',
       }),
   },
   organization: {

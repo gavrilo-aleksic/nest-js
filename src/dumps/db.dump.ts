@@ -12,5 +12,6 @@ INSERT INTO public.user_model VALUES (4, 'test 3', '8d1dde9bc7230e24b8f87e6cb75d
 
 INSERT INTO public.user_organization VALUES (1, 1);
 INSERT INTO public.user_organization VALUES (2, 2);
+INSERT INTO public.user_organization VALUES (3, 3);
 
 `;
