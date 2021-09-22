@@ -49,6 +49,8 @@ export class AuthService {
         true,
       );
       await this.userOrganizationRepository.save(relation);
+    } else if (user.organizationIds) {
+      // TODO: Implement attaching existing organizations to new user;
     }
     return createdUser;
   }

@@ -14,6 +14,8 @@ import { AuthService } from './auth.service';
 import { jwtServiceMockFactory } from 'src/test/mocks/services/jwt.service.mock';
 import { createMockUser } from 'src/test/mocks/models/user.mock';
 import { BadRequestException } from '@nestjs/common';
+import { UserOrganizationRepository } from '../repositories/user-organization.repository';
+import { userOrganizationRepositoryMockFactory } from 'src/modules/organization/repositories/user-organization.repository';
 
 describe('Test [AuthService]', () => {
   let authService: AuthService;
@@ -41,6 +43,10 @@ describe('Test [AuthService]', () => {
         {
           provide: OrganizationRepository,
           useFactory: organizationRepositoryMockFactory,
+        },
+        {
+          provide: UserOrganizationRepository,
+          useFactory: userOrganizationRepositoryMockFactory,
         },
       ],
     }).compile();
