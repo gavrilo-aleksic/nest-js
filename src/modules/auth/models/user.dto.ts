@@ -1,4 +1,6 @@
+import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsBoolean,
   IsDefined,
   IsInt,
@@ -19,6 +21,11 @@ export class CreateUserDTO {
   @IsBoolean()
   @IsOptional()
   public isAdmin?: boolean;
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => Number)
+  public organizationIds?: number[];
 }
 
 export class UpdateUserDTO {

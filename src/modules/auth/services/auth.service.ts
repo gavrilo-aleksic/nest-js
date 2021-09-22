@@ -2,11 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IJWT } from 'src/@types/api';
 import { UserRepository } from 'src/modules/auth/repositories/user.repository';
+import {
+  defaultOrganizationName,
+  OrganizationModel,
+} from 'src/modules/organization/models/organization.model';
 import { OrganizationRepository } from 'src/modules/organization/repositories/organization.repository';
 import { Exceptions } from 'src/shared/errors/error-exceptions';
 import { hashPassword, validatePassword } from 'src/shared/utils/auth.utils';
+import { UserOrganizationModel } from '../models/user-organization.model';
 import { UpdateUserDTO, CreateUserDTO } from '../models/user.dto';
 import { UserModel } from '../models/user.model';
+import { UserOrganizationRepository } from '../repositories/user-organization.repository';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +20,7 @@ export class AuthService {
     private userRepository: UserRepository,
     private organizationRepository: OrganizationRepository,
     private jwtService: JwtService,
+    private userOrganizationRepository: UserOrganizationRepository,
   ) {}
 
   async createUser(user: CreateUserDTO) {
@@ -23,9 +30,27 @@ export class AuthService {
     if (existingUser) {
       throw Exceptions.auth.NameTakenException(user.username);
     }
+
     const encPassword = hashPassword(user.password);
     const newUser = new UserModel(user.username, encPassword);
-    return this.userRepository.save(newUser);
+
+    const createdUser = await this.userRepository.save(newUser);
+
+    if (user.isAdmin && !user.organizationIds) {
+      const newOrganization = new OrganizationModel(defaultOrganizationName());
+      const organizationResult = await this.organizationRepository.save(
+        newOrganization,
+      );
+      newUser.organizations = [organizationResult];
+      newUser.selectedOrganization = newOrganization;
+      const relation = UserOrganizationModel.createUserOrganization(
+        newUser,
+        newOrganization,
+        true,
+      );
+      await this.userOrganizationRepository.save(relation);
+    }
+    return createdUser;
   }
 
   async validateUser(

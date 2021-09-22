@@ -4,13 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+export const defaultOrganizationName = () => 'New Organization';
 @Entity()
 export class OrganizationModel {
   constructor(name: string) {

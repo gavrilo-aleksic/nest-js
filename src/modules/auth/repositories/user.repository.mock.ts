@@ -1,6 +1,6 @@
 import { createMockUser } from 'src/test/mocks/models/user.mock';
-import { UserModel } from '../../models/user.model';
-import { UserRepository } from '../user.repository';
+import { UserModel } from '../models/user.model';
+import { UserRepository } from './user.repository';
 
 export const userRepositoryMockFactory: () => UserRepository = () => ({
   entity: UserModel,

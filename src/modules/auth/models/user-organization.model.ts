@@ -20,12 +20,28 @@ export class UserOrganizationModel {
   @UpdateDateColumn()
   public updatedAt?: Date;
 
-  @ManyToOne(() => UserModel, { nullable: true, cascade: true })
+  @ManyToOne(() => UserModel, { nullable: true })
   public user: UserModel;
 
-  @ManyToOne(() => OrganizationModel, { nullable: true, cascade: true })
+  @ManyToOne(() => OrganizationModel, {
+    nullable: true,
+  })
   public organization: OrganizationModel;
 
   @Column({ nullable: true, type: 'json' })
   public roles: IUserRoles;
+
+  public static createUserOrganization(
+    user: UserModel,
+    organization: OrganizationModel,
+    isAdmin?: boolean,
+  ) {
+    const userOrganization = new UserOrganizationModel();
+    userOrganization.organization = organization;
+    userOrganization.user = user;
+    if (isAdmin) {
+      userOrganization.roles = { admin: true };
+    }
+    return userOrganization;
+  }
 }

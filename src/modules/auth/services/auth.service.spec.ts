@@ -9,7 +9,7 @@ import {
 } from 'src/settings/environment.settings';
 import { CreateUserDTO } from '../models/user.dto';
 import { UserRepository } from '../repositories/user.repository';
-import { userRepositoryMockFactory } from '../repositories/mocks/user.repository.mock';
+import { userRepositoryMockFactory } from '../repositories/user.repository.mock';
 import { AuthService } from './auth.service';
 import { jwtServiceMockFactory } from 'src/test/mocks/services/jwt.service.mock';
 import { createMockUser } from 'src/test/mocks/models/user.mock';

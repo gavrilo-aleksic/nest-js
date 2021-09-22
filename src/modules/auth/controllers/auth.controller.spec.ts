@@ -7,6 +7,7 @@ import { UpdateUserDTO, CreateUserDTO } from '../models/user.dto';
 import { UserRepository } from '../repositories/user.repository';
 import { Repository } from 'src/shared/repository';
 import { createMockApp, getToken } from 'src/shared/utils/test.utils';
+import { defaultOrganizationName } from 'src/modules/organization/models/organization.model';
 
 describe('Test Auth module', () => {
   let app: INestApplication;
@@ -52,6 +53,23 @@ describe('Test Auth module', () => {
 
       expect(createdUser.username).toEqual(newUser.username);
       expect(createdUser.encPassword).toBeUndefined();
+    });
+
+    it('should successfully register user with new organization if isAdmin', async () => {
+      const newUser: CreateUserDTO = {
+        username: 'New User 1',
+        password: 'test',
+        isAdmin: true,
+      };
+      const response = await request(app.getHttpServer())
+        .post(`/${Routes.auth.root}/${Routes.auth.register}`)
+        .send(newUser);
+
+      const createdUser = response.body as UserModel;
+      expect(createdUser.organizations).toBeDefined();
+      expect(createdUser.organizations[0].name).toEqual(
+        defaultOrganizationName(),
+      );
     });
 
     it('should fail if provided username is taken', async () => {
