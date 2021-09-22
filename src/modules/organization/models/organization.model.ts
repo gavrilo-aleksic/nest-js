@@ -29,7 +29,7 @@ export class OrganizationModel {
 
   @OneToMany(
     () => UserOrganizationModel,
-    (userOrganization) => userOrganization.user,
+    (userOrganization) => userOrganization.organization,
     { nullable: true },
   )
   public users?: UserModel[];

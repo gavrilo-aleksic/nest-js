@@ -95,7 +95,6 @@ export class AuthService {
         user.selectedOrganizationId,
         userId,
       );
-
       if (!existingOrganization) {
         throw Exceptions.organization.NotFoundException(
           user.selectedOrganizationId,

@@ -21,7 +21,7 @@ export const Exceptions = {
   organization: {
     NotFoundException: (id: number) =>
       new NotFoundException({
-        error: `Organization ${id} is does not exist`,
+        error: `Organization ${id} does not exist`,
         code: '20002',
       }),
   },

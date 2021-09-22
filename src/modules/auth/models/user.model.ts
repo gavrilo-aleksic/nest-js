@@ -41,7 +41,7 @@ export class UserModel {
 
   @OneToMany(
     () => UserOrganizationModel,
-    (userOrganization) => userOrganization.organization,
+    (userOrganization) => userOrganization.user,
     { nullable: true },
   )
   public organizations?: OrganizationModel[];
