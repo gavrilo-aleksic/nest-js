@@ -112,6 +112,7 @@ describe('Test [AuthService]', () => {
   describe('[createAccessToken]', () => {
     it('Should call jwt service with correct fields', async () => {
       const jwtSign = jest.spyOn(jwtService, 'sign');
+
       const mockUser = createMockUser();
       await authService.createAccessToken(mockUser);
       expect(jwtSign).toHaveBeenCalledWith({

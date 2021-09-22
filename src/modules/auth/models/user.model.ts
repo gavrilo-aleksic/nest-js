@@ -4,8 +4,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -45,4 +47,18 @@ export class UserModel {
     { nullable: true },
   )
   public organizations?: OrganizationModel[];
+
+  @OneToMany(
+    () => UserOrganizationModel,
+    (userOrganization) => userOrganization.user,
+    { nullable: true, eager: true },
+  )
+  @Exclude()
+  private userOrganizations?: UserOrganizationModel[];
+
+  public getRoles(organizationId: number): IUserRoles {
+    return this.userOrganizations?.find(
+      (organization) => organization.id === organizationId,
+    )?.roles;
+  }
 }

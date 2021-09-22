@@ -23,6 +23,12 @@ export class UserOrganizationModel {
   @ManyToOne(() => UserModel, { nullable: true })
   public user: UserModel;
 
+  @Column({ nullable: true })
+  public userId: number;
+
+  @Column({ nullable: true })
+  public organizationId: number;
+
   @ManyToOne(() => OrganizationModel, {
     nullable: true,
   })

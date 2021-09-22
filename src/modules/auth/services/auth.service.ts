@@ -23,6 +23,14 @@ export class AuthService {
     private userOrganizationRepository: UserOrganizationRepository,
   ) {}
 
+  async getUser(id: number) {
+    const existingUser = await this.userRepository.getOne(id);
+    if (!existingUser) {
+      throw Exceptions.auth.NotFoundException(id);
+    }
+    return existingUser;
+  }
+
   async createUser(user: CreateUserDTO) {
     const existingUser = await this.userRepository.findByUsername(
       user.username,
@@ -61,8 +69,7 @@ export class AuthService {
   ): Promise<Partial<UserModel>> {
     const user = await this.userRepository.findByUsername(username);
     if (user && validatePassword(pass, user.encPassword)) {
-      const { encPassword, ...result } = user;
-      return result;
+      return user;
     }
     return null;
   }
@@ -72,6 +79,7 @@ export class AuthService {
       username: user.username,
       sub: user.id,
       selectedOrganizationId: user.selectedOrganization?.id,
+      roles: user.getRoles(user.selectedOrganization?.id),
     };
     return {
       access_token: this.jwtService.sign(payload),
@@ -103,14 +111,6 @@ export class AuthService {
       existingUser.selectedOrganization = existingOrganization;
     }
     await this.userRepository.save(existingUser);
-    return existingUser;
-  }
-
-  async getUser(id: number) {
-    const existingUser = await this.userRepository.getOne(id);
-    if (!existingUser) {
-      throw Exceptions.auth.NotFoundException(id);
-    }
     return existingUser;
   }
 }
