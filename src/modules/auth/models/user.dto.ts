@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsDefined,
   IsInt,
   IsNumber,
@@ -6,7 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class UserDTO {
+export class CreateUserDTO {
   @IsString()
   @IsDefined()
   public username: string;
@@ -14,6 +15,10 @@ export class UserDTO {
   @IsString()
   @IsDefined()
   public password: string;
+
+  @IsBoolean()
+  @IsOptional()
+  public isAdmin?: boolean;
 }
 
 export class UpdateUserDTO {

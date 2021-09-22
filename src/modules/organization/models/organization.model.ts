@@ -1,3 +1,4 @@
+import { UserOrganizationModel } from 'src/modules/auth/models/user-organization.model';
 import { UserModel } from 'src/modules/auth/models/user.model';
 import {
   Column,
@@ -5,6 +6,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -26,11 +28,10 @@ export class OrganizationModel {
   @UpdateDateColumn()
   public updatedAt: Date;
 
-  @ManyToMany(() => UserModel)
-  @JoinTable({
-    name: 'user_organization',
-    joinColumn: { name: 'organization_id' },
-    inverseJoinColumn: { name: 'user_id' },
-  })
+  @OneToMany(
+    () => UserOrganizationModel,
+    (userOrganization) => userOrganization.user,
+    { nullable: true },
+  )
   public users?: UserModel[];
 }

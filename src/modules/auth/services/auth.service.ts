@@ -5,7 +5,7 @@ import { UserRepository } from 'src/modules/auth/repositories/user.repository';
 import { OrganizationRepository } from 'src/modules/organization/repositories/organization.repository';
 import { Exceptions } from 'src/shared/errors/error-exceptions';
 import { hashPassword, validatePassword } from 'src/shared/utils/auth.utils';
-import { UpdateUserDTO, UserDTO } from '../models/user.dto';
+import { UpdateUserDTO, CreateUserDTO } from '../models/user.dto';
 import { UserModel } from '../models/user.model';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async createUser(user: UserDTO) {
+  async createUser(user: CreateUserDTO) {
     const existingUser = await this.userRepository.findByUsername(
       user.username,
     );
@@ -76,7 +76,7 @@ export class AuthService {
       }
       existingUser.selectedOrganization = existingOrganization;
     }
-    const updatedUser = await this.userRepository.save(existingUser);
+    await this.userRepository.save(existingUser);
     return existingUser;
   }
 

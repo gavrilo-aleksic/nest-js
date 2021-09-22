@@ -20,8 +20,8 @@ export class OrganizationRepository extends Repository<OrganizationModel> {
       .createQueryBuilder('organization')
       .innerJoin(
         'organization.users',
-        'user',
-        'user.id = :userId AND organization.id = :id',
+        'userOrganization',
+        'userOrganization.userId = :userId AND userOrganization.organizationId = :id',
         { userId, id },
       )
       .getOne();

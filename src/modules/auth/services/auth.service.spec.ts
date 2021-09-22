@@ -7,7 +7,7 @@ import {
   envFilePath,
   validateEnvironment,
 } from 'src/settings/environment.settings';
-import { UserDTO } from '../models/user.dto';
+import { CreateUserDTO } from '../models/user.dto';
 import { UserRepository } from '../repositories/user.repository';
 import { userRepositoryMockFactory } from '../repositories/mocks/user.repository.mock';
 import { AuthService } from './auth.service';
@@ -52,7 +52,7 @@ describe('Test [AuthService]', () => {
 
   describe('[createUser]', () => {
     it('Should return valid user if provided unused username and password', async () => {
-      const mockUser: UserDTO = {
+      const mockUser: CreateUserDTO = {
         username: 'Some New User',
         password: 'test',
       };
@@ -68,7 +68,7 @@ describe('Test [AuthService]', () => {
     });
 
     it('Should fail if username exist', async () => {
-      const mockUser: UserDTO = {
+      const mockUser: CreateUserDTO = {
         username: 'Some New User',
         password: 'test',
       };

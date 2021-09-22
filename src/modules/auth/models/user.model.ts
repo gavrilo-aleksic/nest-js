@@ -4,13 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserOrganizationModel } from './user-organization.model';
 
 @Entity()
 export class UserModel {
@@ -40,11 +39,10 @@ export class UserModel {
   })
   public selectedOrganization?: OrganizationModel;
 
-  @ManyToMany(() => OrganizationModel)
-  @JoinTable({
-    name: 'user_organization',
-    joinColumn: { name: 'user_id' },
-    inverseJoinColumn: { name: 'organization_id' },
-  })
+  @OneToMany(
+    () => UserOrganizationModel,
+    (userOrganization) => userOrganization.organization,
+    { nullable: true },
+  )
   public organizations?: OrganizationModel[];
 }

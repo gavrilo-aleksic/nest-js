@@ -3,7 +3,7 @@ import { UserModel } from '../models/user.model';
 import { USER_DUMP } from 'src/dumps/db.dump';
 import * as request from 'supertest';
 import { Routes } from 'src/routes';
-import { UpdateUserDTO, UserDTO } from '../models/user.dto';
+import { UpdateUserDTO, CreateUserDTO } from '../models/user.dto';
 import { UserRepository } from '../repositories/user.repository';
 import { Repository } from 'src/shared/repository';
 import { createMockApp, getToken } from 'src/shared/utils/test.utils';
@@ -22,25 +22,25 @@ describe('Test Auth module', () => {
 
   beforeEach(async () => {
     await repository.query(
-      `DELETE FROM user_model; 
-       DELETE FROM organization_model;
-       DELETE FROM user_organization`,
+      `DELETE FROM user_organization;
+       DELETE FROM user_model; 
+       DELETE FROM organization_model;`,
     );
     await repository.query(USER_DUMP);
   });
 
   afterAll(async () => {
     await repository.query(
-      `DELETE FROM user_model; 
-       DELETE FROM organization_model;
-       DELETE FROM user_organization`,
+      `DELETE FROM user_organization;
+       DELETE FROM user_model; 
+       DELETE FROM organization_model;`,
     );
     await app.close();
   });
 
   describe('POST /register', () => {
     it('should successfully register user if provided username and password', async () => {
-      const newUser: UserDTO = {
+      const newUser: CreateUserDTO = {
         username: 'New User 1',
         password: 'test',
       };
@@ -55,7 +55,7 @@ describe('Test Auth module', () => {
     });
 
     it('should fail if provided username is taken', async () => {
-      const newUser: UserDTO = {
+      const newUser: CreateUserDTO = {
         username: 'galeksic',
         password: 'test',
       };
@@ -111,14 +111,14 @@ describe('Test Auth module', () => {
   });
 
   describe('PUT /', () => {
-    it('Should update user password', async () => {
-      const access_token = await getToken(app, 'test', 'test');
+    it('Should update user password of different user', async () => {
+      const access_token = await getToken(app, 'galeksic', 'test');
 
       await request(app.getHttpServer())
         .put(`/${Routes.auth.root}`)
-        .send({ password: 'newPassword' } as UpdateUserDTO)
+        .send({ password: 'newPassword', userId: 1 } as UpdateUserDTO)
         .set('Authorization', `Bearer ${access_token}`);
-      const new_token = await getToken(app, 'test', 'newPassword');
+      const new_token = await getToken(app, 'galeksic', 'newPassword');
       expect(new_token).toBeDefined();
     });
 
@@ -150,6 +150,17 @@ describe('Test Auth module', () => {
         .send({ selectedOrganizationId: 3 } as UpdateUserDTO)
         .set('Authorization', `Bearer ${access_token}`);
       expect((<UserModel>body).selectedOrganization.id).toEqual(3);
+    });
+
+    it('Should update user sending request if no userId provided', async () => {
+      const access_token = await getToken(app, 'test', 'test');
+
+      const { body } = await request(app.getHttpServer())
+        .put(`/${Routes.auth.root}`)
+        .send({ selectedOrganizationId: 3 } as UpdateUserDTO)
+        .set('Authorization', `Bearer ${access_token}`);
+      expect((<UserModel>body).selectedOrganization.id).toEqual(3);
+      expect((<UserModel>body).id).toEqual(3);
     });
   });
 });

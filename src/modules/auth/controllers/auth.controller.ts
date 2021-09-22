@@ -13,7 +13,7 @@ import { IRequest } from 'src/@types/api';
 import { UserModel } from 'src/modules/auth/models/user.model';
 import { Routes } from 'src/routes';
 import { Exceptions } from 'src/shared/errors/error-exceptions';
-import { UpdateUserDTO, UserDTO } from '../models/user.dto';
+import { UpdateUserDTO, CreateUserDTO } from '../models/user.dto';
 import { AuthService } from '../services/auth.service';
 
 @Controller({ path: Routes.auth.root })
@@ -21,7 +21,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post(Routes.auth.register)
-  async createUser(@Body() user: UserDTO): Promise<UserModel> {
+  async createUser(@Body() user: CreateUserDTO): Promise<UserModel> {
     return this.authService.createUser(user);
   }
 
