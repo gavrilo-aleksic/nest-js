@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IJWT } from 'src/@types/api';
 import { UserOrganizationModel } from 'src/modules/auth/models/user-organization.model';
 import { UserOrganizationRepository } from 'src/modules/auth/repositories/user-organization.repository';
 import { OrganizationPostDTO } from '../models/organization.dto';

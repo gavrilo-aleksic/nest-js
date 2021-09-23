@@ -1,3 +1,0 @@
-interface IUserRoles {
-  admin?: boolean;
-}

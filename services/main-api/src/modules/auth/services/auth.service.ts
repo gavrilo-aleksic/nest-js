@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IJWT } from 'src/@types/api';
 import { UserRepository } from 'src/modules/auth/repositories/user.repository';
 import {
   defaultOrganizationName,
