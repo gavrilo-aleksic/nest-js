@@ -11,11 +11,12 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { IRequest } from 'src/@types/api';
+import { Routes } from 'src/routes';
 import { OrganizationPostDTO } from '../models/organization.dto';
 import { OrganizationModel } from '../models/organization.model';
 import { OrganizationService } from '../services/organization.service';
 
-@Controller({ path: 'organization' })
+@Controller({ path: Routes.organization.root })
 export class OrganizationController {
   constructor(private organizationService: OrganizationService) {}
 
@@ -23,8 +24,9 @@ export class OrganizationController {
   @Post()
   async createOrganization(
     @Body() organization: OrganizationPostDTO,
+    @Request() request: IRequest,
   ): Promise<OrganizationModel> {
-    return this.organizationService.create(organization);
+    return this.organizationService.create(organization, request.user);
   }
 
   @UseGuards(AuthGuard('jwt'))

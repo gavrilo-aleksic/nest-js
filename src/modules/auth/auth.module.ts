@@ -6,19 +6,12 @@ import { AuthService } from 'src/modules/auth/services/auth.service';
 import JWTOptions from 'src/settings/auth.settings';
 import { SharedModule } from 'src/shared/shared.module';
 import { OrganizationModule } from '../organization/organization.module';
-import { UserOrganizationRepository } from './repositories/user-organization.repository';
 import { JwtStrategy } from './services/jwt-auth.service';
 import { LocalStrategy } from './services/local-auth.service';
 
 @Module({
   imports: [JwtModule.register(JWTOptions), OrganizationModule, SharedModule],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    UserRepository,
-    LocalStrategy,
-    JwtStrategy,
-    UserOrganizationRepository,
-  ],
+  providers: [AuthService, UserRepository, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

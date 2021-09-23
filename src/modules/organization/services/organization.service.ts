@@ -1,11 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { IJWT } from 'src/@types/api';
+import { UserOrganizationModel } from 'src/modules/auth/models/user-organization.model';
+import { UserOrganizationRepository } from 'src/modules/auth/repositories/user-organization.repository';
 import { OrganizationPostDTO } from '../models/organization.dto';
 import { OrganizationModel } from '../models/organization.model';
 import { OrganizationRepository } from '../repositories/organization.repository';
 
 @Injectable()
 export class OrganizationService {
-  constructor(private organizationRepository: OrganizationRepository) {}
+  constructor(
+    private organizationRepository: OrganizationRepository,
+    private userOrganizationRepository: UserOrganizationRepository,
+  ) {}
 
   async getAll(userId: number) {
     return this.organizationRepository.getAll(userId);
@@ -19,9 +25,18 @@ export class OrganizationService {
     return organization;
   }
 
-  async create(organization: OrganizationPostDTO) {
+  async create(organization: OrganizationPostDTO, user: IJWT) {
     const newOrganization = new OrganizationModel(organization.name);
-    return this.organizationRepository.save(newOrganization);
+    const createdOrganization = await this.organizationRepository.save(
+      newOrganization,
+    );
+    const relation = UserOrganizationModel.createUserOrganization(
+      user.sub,
+      createdOrganization.id,
+      true,
+    );
+    await this.userOrganizationRepository.save(relation);
+    return createdOrganization;
   }
 
   async update(id: number, userId: number, organization: OrganizationPostDTO) {

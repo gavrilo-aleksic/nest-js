@@ -5,4 +5,7 @@ export const Routes = {
     login: 'login',
     profile: 'profile/:id?',
   },
+  organization: {
+    root: 'organization',
+  },
 };

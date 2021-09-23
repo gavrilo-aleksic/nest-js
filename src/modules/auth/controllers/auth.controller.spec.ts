@@ -9,7 +9,7 @@ import { Repository } from 'src/shared/repository';
 import { createMockApp, getToken } from 'src/shared/utils/test.utils';
 import { defaultOrganizationName } from 'src/modules/organization/models/organization.model';
 
-describe('Test Auth module', () => {
+describe('Test Auth Controller', () => {
   let app: INestApplication;
   let repository: Repository<UserModel>;
 
@@ -98,12 +98,12 @@ describe('Test Auth module', () => {
     });
 
     it('Should return user profile if user is logged in', async () => {
-      const access_token = await getToken(app, 'test', 'test');
+      const accessToken = await getToken(app, 'test', 'test');
 
       const { body } = await request(app.getHttpServer())
         .get(`/${Routes.auth.root}/profile`)
         .send()
-        .set('Authorization', `Bearer ${access_token}`);
+        .set('Authorization', `Bearer ${accessToken}`);
       expect(body).toEqual({
         username: 'test',
         id: 3,
@@ -119,64 +119,64 @@ describe('Test Auth module', () => {
     });
 
     it('Should throw invalid request if :id param not integer', async () => {
-      const access_token = await getToken(app, 'test', 'test');
+      const accessToken = await getToken(app, 'test', 'test');
       await request(app.getHttpServer())
         .get(`/${Routes.auth.root}/profile/a`)
         .send()
-        .set('Authorization', `Bearer ${access_token}`)
+        .set('Authorization', `Bearer ${accessToken}`)
         .expect(400);
     });
   });
 
   describe('PUT /', () => {
     it('Should update user password of different user', async () => {
-      const access_token = await getToken(app, 'galeksic', 'test');
+      const accessToken = await getToken(app, 'galeksic', 'test');
 
       await request(app.getHttpServer())
         .put(`/${Routes.auth.root}`)
         .send({ password: 'newPassword', userId: 1 } as UpdateUserDTO)
-        .set('Authorization', `Bearer ${access_token}`);
+        .set('Authorization', `Bearer ${accessToken}`);
       const new_token = await getToken(app, 'galeksic', 'newPassword');
       expect(new_token).toBeDefined();
     });
 
     it('Should throw error if organization does not exist', async () => {
-      const access_token = await getToken(app, 'test', 'test');
+      const accessToken = await getToken(app, 'test', 'test');
 
       await request(app.getHttpServer())
         .put(`/${Routes.auth.root}`)
         .send({ selectedOrganizationId: 111 } as UpdateUserDTO)
-        .set('Authorization', `Bearer ${access_token}`)
+        .set('Authorization', `Bearer ${accessToken}`)
         .expect(404);
     });
 
     it('Should throw error if organization does not exist on user', async () => {
-      const access_token = await getToken(app, 'test', 'test');
+      const accessToken = await getToken(app, 'test', 'test');
 
       await request(app.getHttpServer())
         .put(`/${Routes.auth.root}`)
         .send({ selectedOrganizationId: 2 } as UpdateUserDTO)
-        .set('Authorization', `Bearer ${access_token}`)
+        .set('Authorization', `Bearer ${accessToken}`)
         .expect(404);
     });
 
     it('Should update selected organization if organizationId exists on user', async () => {
-      const access_token = await getToken(app, 'test', 'test');
+      const accessToken = await getToken(app, 'test', 'test');
 
       const { body } = await request(app.getHttpServer())
         .put(`/${Routes.auth.root}`)
         .send({ selectedOrganizationId: 3 } as UpdateUserDTO)
-        .set('Authorization', `Bearer ${access_token}`);
+        .set('Authorization', `Bearer ${accessToken}`);
       expect((<UserModel>body).selectedOrganization.id).toEqual(3);
     });
 
     it('Should update user sending request if no userId provided', async () => {
-      const access_token = await getToken(app, 'test', 'test');
+      const accessToken = await getToken(app, 'test', 'test');
 
       const { body } = await request(app.getHttpServer())
         .put(`/${Routes.auth.root}`)
         .send({ selectedOrganizationId: 3 } as UpdateUserDTO)
-        .set('Authorization', `Bearer ${access_token}`);
+        .set('Authorization', `Bearer ${accessToken}`);
       expect((<UserModel>body).selectedOrganization.id).toEqual(3);
       expect((<UserModel>body).id).toEqual(3);
     });

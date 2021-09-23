@@ -48,10 +48,10 @@ export const getToken = async (
   password: string,
 ) => {
   const {
-    body: { access_token },
+    body: { accessToken },
   } = await request(app.getHttpServer())
     .post(`/${Routes.auth.root}/${Routes.auth.login}`)
     .send({ username, password });
 
-  return access_token;
+  return accessToken;
 };

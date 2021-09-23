@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { UserModel } from './user.model';
 
+const createAdminRole = (): IUserRoles => ({ admin: true });
 @Entity({ name: 'user_organization' })
 export class UserOrganizationModel {
   @PrimaryGeneratedColumn()
@@ -38,15 +39,15 @@ export class UserOrganizationModel {
   public roles: IUserRoles;
 
   public static createUserOrganization(
-    user: UserModel,
-    organization: OrganizationModel,
+    userId: number,
+    organizationId: number,
     isAdmin?: boolean,
   ) {
     const userOrganization = new UserOrganizationModel();
-    userOrganization.organization = organization;
-    userOrganization.user = user;
+    userOrganization.organizationId = organizationId;
+    userOrganization.userId = userId;
     if (isAdmin) {
-      userOrganization.roles = { admin: true };
+      userOrganization.roles = createAdminRole();
     }
     return userOrganization;
   }

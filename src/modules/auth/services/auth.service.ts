@@ -52,8 +52,8 @@ export class AuthService {
       newUser.organizations = [organizationResult];
       newUser.selectedOrganization = newOrganization;
       const relation = UserOrganizationModel.createUserOrganization(
-        newUser,
-        newOrganization,
+        newUser.id,
+        newOrganization.id,
         true,
       );
       await this.userOrganizationRepository.save(relation);
@@ -82,7 +82,7 @@ export class AuthService {
       roles: user.getRoles(user.selectedOrganization?.id),
     };
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
     };
   }
 
