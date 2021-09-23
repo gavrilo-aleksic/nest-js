@@ -14,9 +14,9 @@ INSERT INTO public.user_model VALUES (4, 'test 3', '8d1dde9bc7230e24b8f87e6cb75d
 
 ALTER SEQUENCE public.user_model_id_seq RESTART WITH 7;
 
-INSERT INTO public.user_organization VALUES (1,'2021-09-20 12:31:21.369885', '2021-09-20 12:31:21.369885', NULL, 1,1);
-INSERT INTO public.user_organization VALUES (2,'2021-09-20 12:31:21.369885', '2021-09-20 12:31:21.369885', NULL, 2,2);
-INSERT INTO public.user_organization VALUES (3,'2021-09-20 12:31:21.369885', '2021-09-20 12:31:21.369885', NULL, 3,3);
+INSERT INTO public.user_organization (id, "createdAt", "updatedAt", roles, "userId", "organizationId") VALUES (1,'2021-09-20 12:31:21.369885', '2021-09-20 12:31:21.369885', NULL, 1,1);
+INSERT INTO public.user_organization (id, "createdAt", "updatedAt", roles, "userId", "organizationId") VALUES (2,'2021-09-20 12:31:21.369885', '2021-09-20 12:31:21.369885', NULL, 2,2);
+INSERT INTO public.user_organization (id, "createdAt", "updatedAt", roles, "userId", "organizationId") VALUES (3,'2021-09-20 12:31:21.369885', '2021-09-20 12:31:21.369885', NULL, 3,3);
 
 ALTER SEQUENCE public.user_organization_id_seq RESTART WITH 4;
 
