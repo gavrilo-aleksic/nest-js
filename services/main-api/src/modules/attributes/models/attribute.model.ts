@@ -23,6 +23,9 @@ export class AttributeModel {
   @Column({ nullable: false })
   public type: AttributeTypeEnum;
 
+  @Column({ nullable: false, default: true })
+  public required: boolean;
+
   @CreateDateColumn()
   public createdAt: Date;
 

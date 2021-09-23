@@ -46,10 +46,11 @@ export class OrganizationService {
     if (!existingOrganization) {
       throw new NotFoundException();
     }
-    return this.organizationRepository.save({
+    const result = await this.organizationRepository.save({
       ...existingOrganization,
       ...organization,
     });
+    return result;
   }
 
   async delete() {}
