@@ -12,11 +12,13 @@ import { AttributeTypeEnum } from './attribute-type.enum';
 @Entity()
 export class AttributeModel {
   constructor(
+    organizationId: number,
     name: string,
     displayName?: string,
     type?: AttributeTypeEnum,
     required?: boolean,
   ) {
+    this.organizationId = organizationId;
     this.name = name;
     this.displayName = displayName;
     this.type = type || 'STRING';
@@ -45,4 +47,7 @@ export class AttributeModel {
 
   @ManyToOne(() => OrganizationModel, { nullable: false })
   public organization: OrganizationModel;
+
+  @Column({ nullable: false })
+  public organizationId: number;
 }

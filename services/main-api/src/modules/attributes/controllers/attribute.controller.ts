@@ -25,7 +25,6 @@ export class AttributeController {
 
   @Get()
   async getAll(@Request() request: IRequest) {
-    console.log(request.organizationId);
     return this.attributeService.getAll(request.organizationId);
   }
 
@@ -33,11 +32,7 @@ export class AttributeController {
   async createAttribute(
     @Request() request: IRequest,
     @Body() attribute: CreateAttributeDTO,
-    @Query('organizationId') organizationId: number,
   ) {
-    return this.attributeService.create(
-      organizationId || request.user.selectedOrganizationId,
-      attribute,
-    );
+    return this.attributeService.create(request.organizationId, attribute);
   }
 }

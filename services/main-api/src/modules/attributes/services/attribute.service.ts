@@ -1,15 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { OrganizationRepository } from 'src/modules/organization/repositories/organization.repository';
 import { CreateAttributeDTO } from '../models/attribute.dto';
 import { AttributeModel } from '../models/attribute.model';
 import { AttributeRepository } from '../repositories/attribute.repository';
 
 @Injectable()
 export class AttributeService {
-  constructor(
-    private attributeRepository: AttributeRepository,
-    private organizationRepository: OrganizationRepository,
-  ) {}
+  constructor(private attributeRepository: AttributeRepository) {}
 
   async getAll(organizationId: number) {
     return this.attributeRepository.getAll(organizationId);
@@ -17,6 +13,7 @@ export class AttributeService {
 
   async create(organizationId: number, attribute: CreateAttributeDTO) {
     const newAttribute = new AttributeModel(
+      organizationId,
       attribute.name,
       attribute.displayName,
       attribute.type,

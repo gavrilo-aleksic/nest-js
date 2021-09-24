@@ -14,5 +14,6 @@ export class CreateAttributeDTO {
   required: boolean;
 
   @IsIn(AttributeTypes)
+  @IsOptional()
   type: AttributeTypeEnum;
 }
