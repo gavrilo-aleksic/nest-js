@@ -11,8 +11,16 @@ import { AttributeTypeEnum } from './attribute-type.enum';
 
 @Entity()
 export class AttributeModel {
-  constructor(name: string) {
+  constructor(
+    name: string,
+    displayName?: string,
+    type?: AttributeTypeEnum,
+    required?: boolean,
+  ) {
     this.name = name;
+    this.displayName = displayName;
+    this.type = type || 'STRING';
+    this.required = required || false;
   }
   @PrimaryGeneratedColumn()
   public id?: number;

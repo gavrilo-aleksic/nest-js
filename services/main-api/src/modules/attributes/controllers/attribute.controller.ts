@@ -7,27 +7,26 @@ import {
   Query,
   Request,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { IRequest } from 'src/@types/api';
 import { Routes } from 'src/routes';
 import { OrganizationGuard } from 'src/shared/guards/organization.guard';
+import { OrganizationInterceptor } from 'src/shared/interceptors/organization.interceptor';
 import { CreateAttributeDTO } from '../models/attribute.dto';
 import { AttributeService } from '../services/attribute.service';
 
 @UseGuards(AuthGuard('jwt'), OrganizationGuard)
+@UseInterceptors(OrganizationInterceptor)
 @Controller(Routes.attribute.root)
 export class AttributeController {
   constructor(private attributeService: AttributeService) {}
 
   @Get()
-  async getAll(
-    @Request() request: IRequest,
-    @Query('organizationId', ParseIntPipe) organizationId: number,
-  ) {
-    return this.attributeService.getAll(
-      organizationId || request.user.selectedOrganizationId,
-    );
+  async getAll(@Request() request: IRequest) {
+    console.log(request.organizationId);
+    return this.attributeService.getAll(request.organizationId);
   }
 
   @Post()
@@ -37,8 +36,7 @@ export class AttributeController {
     @Query('organizationId') organizationId: number,
   ) {
     return this.attributeService.create(
-      request.user,
-      organizationId,
+      organizationId || request.user.selectedOrganizationId,
       attribute,
     );
   }

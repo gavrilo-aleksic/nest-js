@@ -25,10 +25,16 @@ export class OrganizationGuard implements CanActivate {
       throw Exceptions.organization.NotSelected();
     }
     if (!isNaN(queryOrganizationId)) {
-      return this.organizationService.isUserOnOrganization(
-        request.user,
-        queryOrganizationId,
-      );
+      return this.organizationService
+        .isUserOnOrganization(request.user, queryOrganizationId)
+        .then((res) => {
+          if (!res) {
+            throw Exceptions.organization.NotFoundException(
+              queryOrganizationId,
+            );
+          }
+          return true;
+        });
     }
     return true;
   }
