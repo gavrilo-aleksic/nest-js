@@ -7,6 +7,6 @@ import { OrganizationService } from './services/organization.service';
   imports: [SharedModule],
   controllers: [OrganizationController],
   providers: [OrganizationService, OrganizationRepository],
-  exports: [OrganizationRepository],
+  exports: [OrganizationRepository, OrganizationService],
 })
 export class OrganizationModule {}

@@ -8,4 +8,7 @@ export const Routes = {
   organization: {
     root: 'organization',
   },
+  attribute: {
+    root: 'attribute',
+  },
 };

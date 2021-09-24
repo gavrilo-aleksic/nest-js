@@ -53,5 +53,21 @@ export class OrganizationService {
     return result;
   }
 
+  async isUserOnOrganization(
+    user: IJWT,
+    organizationId: number,
+  ): Promise<boolean> {
+    if (organizationId && user.selectedOrganizationId !== organizationId) {
+      const organization = await this.organizationRepository.getOne(
+        organizationId,
+        user.sub,
+      );
+      if (!organization) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   async delete() {}
 }

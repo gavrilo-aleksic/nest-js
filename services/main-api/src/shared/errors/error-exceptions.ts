@@ -24,5 +24,11 @@ export const Exceptions = {
         error: `Organization ${id} does not exist`,
         code: '20002',
       }),
+    NotSelected: () =>
+      new BadRequestException({
+        error:
+          'Organization not provided. Please provide organization as query parameter organizationId or select default organization for user',
+        code: '20003',
+      }),
   },
 };

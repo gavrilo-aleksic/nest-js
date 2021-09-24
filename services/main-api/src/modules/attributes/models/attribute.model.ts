@@ -20,6 +20,9 @@ export class AttributeModel {
   @Column({ nullable: false })
   public name: string;
 
+  @Column({ nullable: true })
+  public displayName: string;
+
   @Column({ nullable: false })
   public type: AttributeTypeEnum;
 
