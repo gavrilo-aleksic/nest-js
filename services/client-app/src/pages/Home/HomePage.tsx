@@ -1,14 +1,5 @@
-import { List, ListItem, TableContainer } from '@material-ui/core';
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableCell,
-  TableRow,
-  ListItemButton,
-  ListItemText,
-} from '@mui/material';
+import { List, ListItem } from '@material-ui/core';
+import { Paper, ListItemButton, ListItemText } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../../components/Header/Header';
