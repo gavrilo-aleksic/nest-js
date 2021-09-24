@@ -41,8 +41,8 @@ const AppTable = ({
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              {columns.map((column) => (
-                <TableCell component="th" scope="row" align="right">
+              {columns.map((column, index) => (
+                <TableCell component="th" scope="row" align="right" key={index}>
                   {column.transform
                     ? column.transform(row[column.value])
                     : row[column.value]}

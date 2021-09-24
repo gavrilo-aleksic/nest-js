@@ -129,7 +129,11 @@ const HomePage = () => {
                 { label: 'ID', value: 'id' },
                 { label: 'Name', value: 'name' },
                 { label: 'Type', value: 'type' },
-                { label: 'Required', value: 'required' },
+                {
+                  label: 'Required',
+                  value: 'required',
+                  transform: (value) => value.toString(),
+                },
                 {
                   label: 'Created At',
                   value: 'createdAt',
