@@ -1,5 +1,5 @@
 import { List, ListItem } from '@material-ui/core';
-import { Paper, ListItemButton, ListItemText } from '@mui/material';
+import { Paper, ListItemButton, ListItemText, Modal } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../../components/Header/Header';
@@ -16,11 +16,17 @@ import AodIcon from '@mui/icons-material/Aod';
 import './HomePage.css';
 import { UserContext } from '../../contexts/User.context';
 import AppTable from '../../components/Table/Table';
+import OrganizationDetails from '../../components/OrganizationDetails/OrganizationDetails';
 
 const HomePage = () => {
   const { push } = useHistory();
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [attributes, setAttributes] = useState<Attribute[]>([]);
+  const [selectedOrganization, setSelectedOrganization] = useState<
+    Organization | undefined
+  >();
+  const [modalOpen, setModalOpen] = useState(false);
+
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -75,6 +81,10 @@ const HomePage = () => {
               Organization Data
             </Paper>
             <AppTable
+              onClick={(row) => {
+                setSelectedOrganization(row);
+                setModalOpen(true);
+              }}
               style={{ width: '600px' }}
               columns={[
                 { label: 'ID', value: 'id' },
@@ -150,6 +160,9 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <OrganizationDetails organization={selectedOrganization} />
+      </Modal>
     </>
   );
 };
