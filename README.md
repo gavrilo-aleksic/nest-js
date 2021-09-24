@@ -32,6 +32,8 @@
 $ npm install
 ```
 
+Will require manual installation of PostgresSQL manually (Until Docker is fully functional)
+
 ## Running the app
 
 ```bash

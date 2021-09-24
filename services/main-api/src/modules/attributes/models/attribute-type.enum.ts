@@ -1,1 +1,2 @@
-export type AttributeTypeEnum = 'BOOLEAN' | 'NUMBER' | 'STRING' | 'JSON';
+export const AttributeTypes = ['BOOLEAN', 'NUMBER', 'STRING', 'JSON'] as const;
+export type AttributeTypeEnum = typeof AttributeTypes[number];

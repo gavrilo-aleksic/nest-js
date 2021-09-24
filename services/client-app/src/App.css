@@ -1,0 +1,22 @@
+.MuiTableRow-root:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+.MuiTableCell-root.MuiTableCell-head {
+  font-weight: bold;
+}
+
+.app-title-banner {
+  margin: 10px;
+  margin-left: 0;
+  padding: 10px;
+}
+
+.typography-blue {
+  color: blue;
+}
+
+.app-header__menu .MuiPaper-root {
+  width: 150px;
+}

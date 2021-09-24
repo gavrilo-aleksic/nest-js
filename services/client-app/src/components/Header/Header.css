@@ -1,0 +1,6 @@
+.header__wrapper {
+  background-color: #1976d2;
+  height: 65px;
+  display: flex;
+  align-items: center;
+}

@@ -11,8 +11,18 @@ import { AttributeTypeEnum } from './attribute-type.enum';
 
 @Entity()
 export class AttributeModel {
-  constructor(name: string) {
+  constructor(
+    organizationId: number,
+    name: string,
+    displayName?: string,
+    type?: AttributeTypeEnum,
+    required?: boolean,
+  ) {
+    this.organizationId = organizationId;
     this.name = name;
+    this.displayName = displayName;
+    this.type = type || 'STRING';
+    this.required = required || false;
   }
   @PrimaryGeneratedColumn()
   public id?: number;
@@ -20,8 +30,14 @@ export class AttributeModel {
   @Column({ nullable: false })
   public name: string;
 
+  @Column({ nullable: true })
+  public displayName: string;
+
   @Column({ nullable: false })
   public type: AttributeTypeEnum;
+
+  @Column({ nullable: false, default: true })
+  public required: boolean;
 
   @CreateDateColumn()
   public createdAt: Date;
@@ -31,4 +47,7 @@ export class AttributeModel {
 
   @ManyToOne(() => OrganizationModel, { nullable: false })
   public organization: OrganizationModel;
+
+  @Column({ nullable: false })
+  public organizationId: number;
 }

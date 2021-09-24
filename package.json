@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@emotion/styled": "^11.3.0",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.3.0"
+  },
+  "scripts": {
+    "start:api": "cd services/main-api && npm run start:dev",
+    "start:client": "cd services/client-app && npm run start:dev",
+    "start": "npm run start:api & npm run start:client"
+  }
+}
