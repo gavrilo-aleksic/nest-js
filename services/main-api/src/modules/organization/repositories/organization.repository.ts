@@ -11,7 +11,13 @@ export class OrganizationRepository extends Repository<OrganizationModel> {
   async getAll(userId: number) {
     return (await this.getRepository())
       .createQueryBuilder('organization')
-      .innerJoin('organization.users', 'user', 'user.id = :userId', { userId })
+      .innerJoin(
+        'organization.users',
+        'userOrganization',
+        'userOrganization.userId = :userId',
+        { userId },
+      )
+      .orderBy('organization.createdAt')
       .getMany();
   }
 

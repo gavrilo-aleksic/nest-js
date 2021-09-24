@@ -4,6 +4,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 import './App.css';
 import HomePage from './pages/Home/HomePage';
+import OrganizationsPage from './pages/Organizations/OrganizationsPage';
+import UserProvider from './contexts/User.context';
 
 const App = () => {
   return (
@@ -12,7 +14,12 @@ const App = () => {
         <LoginPage />
       </Route>
       <ProtectedRoute path={['/home', '/']}>
-        <HomePage />
+        <UserProvider>
+          <HomePage />
+        </UserProvider>
+      </ProtectedRoute>
+      <ProtectedRoute path="/organizations">
+        <OrganizationsPage />
       </ProtectedRoute>
     </BrowserRouter>
   );

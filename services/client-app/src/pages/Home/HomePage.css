@@ -1,3 +1,17 @@
 .home-page__menu {
-  width: 200px;
+  width: 250px;
+}
+.home-page__menu .MuiListItemButton-root {
+  text-align: left;
+  display: flex;
+  justify-content: inherit;
+}
+.home-page__wrapper {
+  width: 100%;
+}
+
+.home-page__statistics .MuiListItem-root {
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
 }
