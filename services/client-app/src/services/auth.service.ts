@@ -4,6 +4,8 @@ export const loginUser = async (username: string, password: string) => {
   const result = await api.login(username, password);
   if (result.accessToken) {
     localStorage.setItem('jwt', result.accessToken);
+  } else {
+    return Promise.reject(result);
   }
 };
 

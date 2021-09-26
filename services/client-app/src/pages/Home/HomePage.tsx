@@ -1,68 +1,45 @@
-import { List, ListItem } from '@material-ui/core';
-import { Paper, ListItemButton, ListItemText, Modal } from '@mui/material';
+import { IconButton, List, ListItem } from '@material-ui/core';
+import { Paper, Modal, Stack, Alert } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import { Attribute, fetchAttributes } from '../../services/attributes.service';
 import {
   fetchOrganizations,
   Organization,
 } from '../../services/organization.service';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import PersonIcon from '@mui/icons-material/Person';
-import BusinessIcon from '@mui/icons-material/Business';
-import AodIcon from '@mui/icons-material/Aod';
 
 import './HomePage.css';
 import { UserContext } from '../../contexts/User.context';
 import AppTable from '../../components/Table/Table';
 import OrganizationDetails from '../../components/OrganizationDetails/OrganizationDetails';
+import AddIcon from '@mui/icons-material/Add';
+import SideMenu from '../../components/SideMenu/SideMenu';
 
 const HomePage = () => {
-  const { push } = useHistory();
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [attributes, setAttributes] = useState<Attribute[]>([]);
-  const [selectedOrganization, setSelectedOrganization] = useState<
-    Organization | undefined
-  >();
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const { user } = useContext(UserContext);
+  const [selectedOrganization, setSelectedOrganization] =
+    useState<Organization | null>(user?.selectedOrganization || null);
 
   useEffect(() => {
     fetchOrganizations().then((result) => setOrganizations(result));
-    fetchAttributes().then((result) => setAttributes(result));
   }, []);
+
+  useEffect(() => {
+    if (user?.selectedOrganization) {
+      fetchAttributes().then((result) => setAttributes(result));
+    }
+  }, [user?.selectedOrganization]);
+
   return (
     <>
       <Header />
       <div style={{ display: 'flex' }}>
-        <List className="home-page__menu">
-          <ListItem>
-            <ListItemButton>
-              <ListItemIcon>
-                <PersonIcon />
-                <ListItemText primary="Profile" />
-              </ListItemIcon>
-            </ListItemButton>
-          </ListItem>
-          <ListItem onClick={() => push('/organizations')}>
-            <ListItemButton>
-              <ListItemIcon>
-                <BusinessIcon />
-                <ListItemText primary="Organizations" />
-              </ListItemIcon>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemIcon>
-                <AodIcon />
-                <ListItemText primary="Attributes" />
-              </ListItemIcon>
-            </ListItemButton>
-          </ListItem>
-        </List>
+        <SideMenu />
         <div
           style={{
             display: 'flex',
@@ -73,13 +50,22 @@ const HomePage = () => {
           }}
         >
           <div>
-            <Paper
-              variant="elevation"
-              elevation={2}
-              className="app-title-banner"
-            >
-              Organization Data
-            </Paper>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Paper
+                variant="elevation"
+                elevation={2}
+                className="app-title-banner"
+              >
+                Organization Data
+              </Paper>
+              <IconButton
+                onClick={() => {
+                  setModalOpen(true);
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </div>
             <AppTable
               onClick={(row) => {
                 setSelectedOrganization(row);
@@ -126,13 +112,24 @@ const HomePage = () => {
             </List>
           </Paper>
           <div>
-            <Paper
-              variant="elevation"
-              elevation={2}
-              className="app-title-banner"
-            >
-              Attributes Data
-            </Paper>
+            {!selectedOrganization ? (
+              <Stack spacing={2} sx={{ width: '100%' }}>
+                <Alert severity="error">Missing selected organization!</Alert>
+              </Stack>
+            ) : (
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Paper
+                  variant="elevation"
+                  elevation={2}
+                  className="app-title-banner"
+                >
+                  Attributes Data
+                </Paper>
+                <IconButton>
+                  <AddIcon />
+                </IconButton>
+              </div>
+            )}
             <AppTable
               style={{ width: '100%' }}
               columns={[

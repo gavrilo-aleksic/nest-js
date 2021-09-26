@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { loginUser } from '../../services/auth.service';
 import { Modal } from '@material-ui/core';
 import api from '../../services/api';
+import CreateUserModal from './CreateUserModal/CreateUserModal';
 
 const Copyright = (props: any) => {
   return (
@@ -34,7 +35,7 @@ const Copyright = (props: any) => {
 const LoginPage = () => {
   const { push } = useHistory();
   const [registerModal, setRegisterModal] = React.useState(false);
-  const [newUser, setNewUser] = React.useState({ username: '', password: '', passwordConfirm: '' })
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -43,7 +44,7 @@ const LoginPage = () => {
 
     if (username && password) {
       loginUser(username, password).then(() => {
-        push('/');
+        push('/home');
       });
     }
   };
@@ -107,65 +108,16 @@ const LoginPage = () => {
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
-      <Modal open={registerModal} onClose={() => setRegisterModal(false)} >
-        <Box style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '500px',
-          padding: '15px',
-          gap: '20px',
-          backgroundColor: 'white'
-        }}
-          component="form" onSubmit={(values: any) => {
-            console.log(values);
-            if (newUser.password === newUser.passwordConfirm) {
-              api.registerUser(newUser.username, newUser.password);
-              setRegisterModal(false);
-            }
-          }} noValidate>
-          <TextField
-            margin="normal"
-            required
-            label="Username"
-            name="newUsername"
-            autoFocus
-            value={newUser.username}
-            onChange={(e) => setNewUser((newUser) => ({ ...newUser, username: e.target.value }))}
-          />
-          <TextField
-            margin="normal"
-            required
-            name="newPassword"
-            label="Password"
-            type="password"
-            value={newUser.password}
-            onChange={(e) => setNewUser((newUser) => ({ ...newUser, password: e.target.value }))}
-          />
-          <TextField
-            margin="normal"
-            required
-            name="confirmPassword"
-            label="Confirm Password"
-            type="password"
-            value={newUser.passwordConfirm}
-            onChange={(e) => setNewUser((newUser) => ({ ...newUser, passwordConfirm: e.target.value }))}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-          >
-            Create Account
-          </Button>
-          <Button
-            onClick={() => setRegisterModal(false)}
-            type="button"
-            variant="contained"
-          >
-            Cancel
-          </Button>
-        </Box>
+      <Modal open={registerModal} onClose={() => setRegisterModal(false)}>
+        <CreateUserModal
+          onSubmit={(username: string, password: string) => {
+            api.registerUser(username, password);
+            setRegisterModal(false);
+          }}
+          onCancel={() => setRegisterModal(false)}
+        />
       </Modal>
-    </Container >
+    </Container>
   );
 };
 
