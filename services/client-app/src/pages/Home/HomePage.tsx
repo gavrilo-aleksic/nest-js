@@ -161,7 +161,7 @@ const HomePage = () => {
         </div>
       </div>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <OrganizationDetails organization={selectedOrganization} />
+        <OrganizationDetails />
       </Modal>
     </>
   );
