@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useHistory } from 'react-router-dom';
 import { loginUser } from '../../services/auth.service';
+import { Modal } from '@material-ui/core';
+import api from '../../services/api';
 
 const Copyright = (props: any) => {
   return (
@@ -31,6 +33,8 @@ const Copyright = (props: any) => {
 
 const LoginPage = () => {
   const { push } = useHistory();
+  const [registerModal, setRegisterModal] = React.useState(false);
+  const [newUser, setNewUser] = React.useState({ username: '', password: '', passwordConfirm: '' })
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -44,6 +48,7 @@ const LoginPage = () => {
     }
   };
 
+  const openRegisterModal = () => setRegisterModal(true);
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -94,7 +99,7 @@ const LoginPage = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="#" variant="body2" onClick={openRegisterModal}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
@@ -102,7 +107,65 @@ const LoginPage = () => {
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
-    </Container>
+      <Modal open={registerModal} onClose={() => setRegisterModal(false)} >
+        <Box style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '500px',
+          padding: '15px',
+          gap: '20px',
+          backgroundColor: 'white'
+        }}
+          component="form" onSubmit={(values: any) => {
+            console.log(values);
+            if (newUser.password === newUser.passwordConfirm) {
+              api.registerUser(newUser.username, newUser.password);
+              setRegisterModal(false);
+            }
+          }} noValidate>
+          <TextField
+            margin="normal"
+            required
+            label="Username"
+            name="newUsername"
+            autoFocus
+            value={newUser.username}
+            onChange={(e) => setNewUser((newUser) => ({ ...newUser, username: e.target.value }))}
+          />
+          <TextField
+            margin="normal"
+            required
+            name="newPassword"
+            label="Password"
+            type="password"
+            value={newUser.password}
+            onChange={(e) => setNewUser((newUser) => ({ ...newUser, password: e.target.value }))}
+          />
+          <TextField
+            margin="normal"
+            required
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            value={newUser.passwordConfirm}
+            onChange={(e) => setNewUser((newUser) => ({ ...newUser, passwordConfirm: e.target.value }))}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+          >
+            Create Account
+          </Button>
+          <Button
+            onClick={() => setRegisterModal(false)}
+            type="button"
+            variant="contained"
+          >
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
+    </Container >
   );
 };
 
