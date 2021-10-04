@@ -1,5 +1,9 @@
-import { IconButton, List, ListItem } from '@material-ui/core';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 import { Paper, Modal, Stack, Alert } from '@mui/material';
+
 import { useContext, useEffect, useState } from 'react';
 import Header from '../../components/Header/Header';
 import { Attribute, fetchAttributes } from '../../services/attributes.service';
@@ -13,7 +17,6 @@ import './HomePage.css';
 import { UserContext } from '../../contexts/User.context';
 import AppTable from '../../components/Table/Table';
 import OrganizationDetails from '../../components/OrganizationDetails/OrganizationDetails';
-import AddIcon from '@mui/icons-material/Add';
 import SideMenu from '../../components/SideMenu/SideMenu';
 import { OrganizationContext } from '../../contexts/Organization.context';
 

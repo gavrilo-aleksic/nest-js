@@ -4,6 +4,7 @@ import React from 'react';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { getFormData } from '../../services/form.utils';
+import ActionButtons from '../ActionButtons';
 
 interface OrganizationDetailsProps {
   organization?: Organization | null;
@@ -59,17 +60,7 @@ const OrganizationDetails = React.forwardRef(
           label="Display Name"
           defaultValue={organization?.displayName || ''}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Submit
-        </Button>
-        <Button onClick={onCancel} type="button" variant="contained">
-          Cancel
-        </Button>
+        <ActionButtons onCancel={onCancel} />
       </Box>
     );
   },

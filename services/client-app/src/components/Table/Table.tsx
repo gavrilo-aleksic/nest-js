@@ -1,5 +1,4 @@
 import { CSSProperties, useState } from 'react';
-import { TableContainer } from '@material-ui/core';
 import {
   Paper,
   Table,
@@ -7,6 +6,7 @@ import {
   TableHead,
   TableCell,
   TableRow,
+  TableContainer,
 } from '@mui/material';
 
 const AppTable = ({

@@ -1,23 +1,21 @@
 import {
-  Badge,
-  Divider,
-  IconButton,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
-import {
   AppBar,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Menu,
+  Badge,
+  IconButton,
+  Divider,
+  MenuItem,
+  Toolbar,
+  Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useContext, useState } from 'react';
-import { UserContext } from '../../contexts/User.context';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
+import React, { useContext, useState } from 'react';
+import { UserContext } from '../../contexts/User.context';
 
 import './Header.css';
 
