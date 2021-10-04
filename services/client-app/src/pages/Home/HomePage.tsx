@@ -36,7 +36,6 @@ const HomePage = () => {
       fetchAttributes().then((result) => setAttributes(result));
     }
   }, [user?.selectedOrganization]);
-
   return (
     <>
       <Header />
