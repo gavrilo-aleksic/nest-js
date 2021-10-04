@@ -49,6 +49,7 @@ export class OrganizationService {
     const result = await this.organizationRepository.save({
       ...existingOrganization,
       ...organization,
+      id,
     });
     return result;
   }

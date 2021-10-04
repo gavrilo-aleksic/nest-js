@@ -6,6 +6,7 @@ import './App.css';
 import HomePage from './pages/Home/HomePage';
 import OrganizationsPage from './pages/Organizations/OrganizationsPage';
 import UserProvider from './contexts/User.context';
+import OrganizationProvider from './contexts/Organization.context';
 
 const App = () => {
   return (
@@ -13,14 +14,16 @@ const App = () => {
       <Route path="/login" exact>
         <LoginPage />
       </Route>
-      <ProtectedRoute path={['/home', '/']}>
-        <UserProvider>
-          <HomePage />
-        </UserProvider>
-      </ProtectedRoute>
-      <ProtectedRoute path="/organizations">
-        <OrganizationsPage />
-      </ProtectedRoute>
+      <OrganizationProvider>
+        <ProtectedRoute path={['/home', '/']}>
+          <UserProvider>
+            <HomePage />
+          </UserProvider>
+        </ProtectedRoute>
+        <ProtectedRoute path="/organizations">
+          <OrganizationsPage />
+        </ProtectedRoute>
+      </OrganizationProvider>
     </BrowserRouter>
   );
 };

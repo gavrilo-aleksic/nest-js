@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Attribute } from './attributes.service';
+import { Organization } from './organization.service';
 
 const API_BASE_URL = 'http://localhost:3000';
 
@@ -49,6 +50,14 @@ const getUserProfile = () =>
 const getOrganizations = () =>
   axiosInstance.get(`/organization`).then((e) => e.data);
 
+const createOrganization = (organization: Partial<Organization>) =>
+  axiosInstance.post(`/organization`, organization).then((e) => e.data);
+
+const updateOrganization = (organization: Partial<Organization>) =>
+  axiosInstance
+    .put(`/organization/${organization.id}`, organization)
+    .then((e) => e.data);
+
 const getAttributes = () => axiosInstance.get(`/attribute`).then((e) => e.data);
 
 const createAttribute = (attribute: Partial<Attribute>) =>
@@ -61,6 +70,8 @@ const api = {
   getUserProfile,
   registerUser,
   createAttribute,
+  createOrganization,
+  updateOrganization,
 };
 
 export default api;

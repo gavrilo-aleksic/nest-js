@@ -4,8 +4,9 @@ import { useContext, useEffect, useState } from 'react';
 import Header from '../../components/Header/Header';
 import { Attribute, fetchAttributes } from '../../services/attributes.service';
 import {
-  fetchOrganizations,
+  createOrganization,
   Organization,
+  updateOrganization,
 } from '../../services/organization.service';
 
 import './HomePage.css';
@@ -14,20 +15,17 @@ import AppTable from '../../components/Table/Table';
 import OrganizationDetails from '../../components/OrganizationDetails/OrganizationDetails';
 import AddIcon from '@mui/icons-material/Add';
 import SideMenu from '../../components/SideMenu/SideMenu';
+import { OrganizationContext } from '../../contexts/Organization.context';
 
 const HomePage = () => {
-  const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [attributes, setAttributes] = useState<Attribute[]>([]);
-
+  const { addOrganization, organizations, editOrganization } =
+    useContext(OrganizationContext);
+  const { user } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { user } = useContext(UserContext);
   const [selectedOrganization, setSelectedOrganization] =
     useState<Organization | null>(user?.selectedOrganization || null);
-
-  useEffect(() => {
-    fetchOrganizations().then((result) => setOrganizations(result));
-  }, []);
 
   useEffect(() => {
     if (user?.selectedOrganization) {
@@ -61,6 +59,7 @@ const HomePage = () => {
               <IconButton
                 onClick={() => {
                   setModalOpen(true);
+                  setSelectedOrganization(null);
                 }}
               >
                 <AddIcon />
@@ -158,7 +157,23 @@ const HomePage = () => {
         </div>
       </div>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <OrganizationDetails />
+        <OrganizationDetails
+          organization={selectedOrganization}
+          onSubmit={(values) => {
+            if (!values.id)
+              createOrganization(values).then((res) => {
+                addOrganization(res);
+                setModalOpen(false);
+              });
+            else {
+              updateOrganization(values).then((res) => {
+                editOrganization(res);
+                setModalOpen(false);
+              });
+            }
+          }}
+          onCancel={() => setModalOpen(false)}
+        />
       </Modal>
     </>
   );
