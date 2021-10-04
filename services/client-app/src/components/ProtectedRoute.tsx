@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import { UserContext } from '../contexts/User.context';
 
 interface ProtectedRouteProps {
   children: any;
@@ -9,15 +11,13 @@ const ProtectedRoute = ({
   path,
   ...restOfProps
 }: ProtectedRouteProps) => {
-  const isAuthenticated = localStorage.getItem('jwt');
+  const { user } = useContext(UserContext);
   return (
     <Route
       exact
       path={path}
       {...restOfProps}
-      render={(props) =>
-        isAuthenticated ? <>{children}</> : <Redirect to="/login" />
-      }
+      render={(props) => (user ? <>{children}</> : <Redirect to="/login" />)}
     />
   );
 };

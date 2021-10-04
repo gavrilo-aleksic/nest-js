@@ -9,10 +9,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useHistory } from 'react-router-dom';
-import { loginUser } from '../../services/auth.service';
+import { fetchUserProfile, loginUser } from '../../services/auth.service';
 import { Modal } from '@material-ui/core';
 import api from '../../services/api';
 import CreateUserModal from './CreateUserModal/CreateUserModal';
+import { getFormData } from '../../services/form.utils';
+import { UserContext } from '../../contexts/User.context';
 
 const Copyright = (props: any) => {
   return (
@@ -34,19 +36,29 @@ const Copyright = (props: any) => {
 
 const LoginPage = () => {
   const { push } = useHistory();
+  const { user, setUser } = React.useContext(UserContext);
   const [registerModal, setRegisterModal] = React.useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const username = data.get('username')?.toString();
-    const password = data.get('password')?.toString();
+    const { username, password } = getFormData<{
+      username: string;
+      password: string;
+    }>(event.currentTarget);
 
     if (username && password) {
-      loginUser(username, password).then(() => {
-        push('/home');
+      loginUser(username, password).then((token) => {
+        fetchUserProfile().then((res) => {
+          setUser(res);
+          push('/home');
+        });
       });
     }
+  };
+
+  const handleRegister = (username: string, password: string) => {
+    api.registerUser(username, password);
+    setRegisterModal(false);
   };
 
   const openRegisterModal = () => setRegisterModal(true);
@@ -110,10 +122,7 @@ const LoginPage = () => {
       <Copyright sx={{ mt: 8, mb: 4 }} />
       <Modal open={registerModal} onClose={() => setRegisterModal(false)}>
         <CreateUserModal
-          onSubmit={(username: string, password: string) => {
-            api.registerUser(username, password);
-            setRegisterModal(false);
-          }}
+          onSubmit={handleRegister}
           onCancel={() => setRegisterModal(false)}
         />
       </Modal>

@@ -3,23 +3,26 @@ import Button from '@mui/material/Button';
 
 interface ActionButtonsProps {
   onOk?: () => void;
-  onCancel: () => void;
+  onCancel?: () => void;
   disabled?: boolean;
 }
 
 const ActionButtons = ({ onOk, onCancel, disabled }: ActionButtonsProps) => {
   return (
     <Stack direction="row" spacing={2} style={{ justifyContent: 'flex-end' }}>
+      {onCancel && (
+        <Button onClick={onCancel} type="button" variant="outlined">
+          Cancel
+        </Button>
+      )}
       <Button
         disabled={disabled}
         type="submit"
         variant="contained"
         size="large"
+        onClick={onOk}
       >
         Submit
-      </Button>
-      <Button onClick={onCancel} type="button" variant="outlined">
-        Cancel
       </Button>
     </Stack>
   );

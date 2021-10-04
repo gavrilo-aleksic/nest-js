@@ -4,9 +4,17 @@ export const loginUser = async (username: string, password: string) => {
   const result = await api.login(username, password);
   if (result.accessToken) {
     localStorage.setItem('jwt', result.accessToken);
+    return Promise.resolve(result.accessToken);
   } else {
     return Promise.reject(result);
   }
+};
+
+export const isLoggedIn = () => !!localStorage.getItem('jwt');
+
+export const logout = async () => {
+  localStorage.removeItem('jwt');
+  window.location.href = 'http://localhost:3001/login';
 };
 
 export const fetchUserProfile = async () => {

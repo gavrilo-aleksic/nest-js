@@ -19,6 +19,9 @@ import AppTable from '../../components/Table/Table';
 import OrganizationDetails from '../../components/OrganizationDetails/OrganizationDetails';
 import SideMenu from '../../components/SideMenu/SideMenu';
 import { OrganizationContext } from '../../contexts/Organization.context';
+import api from '../../services/api';
+import AlertDialog from '../../components/AlertDialog';
+import { logout } from '../../services/auth.service';
 
 const HomePage = () => {
   const [attributes, setAttributes] = useState<Attribute[]>([]);
@@ -26,7 +29,7 @@ const HomePage = () => {
     useContext(OrganizationContext);
   const { user } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [logoutAlert, setLogoutAlert] = useState(false);
   const [selectedOrganization, setSelectedOrganization] =
     useState<Organization | null>(user?.selectedOrganization || null);
 
@@ -35,7 +38,7 @@ const HomePage = () => {
       fetchAttributes().then((result) => setAttributes(result));
     }
   }, [user?.selectedOrganization]);
-
+  console.log(user);
   return (
     <>
       <Header />
@@ -162,22 +165,38 @@ const HomePage = () => {
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <OrganizationDetails
           organization={selectedOrganization}
-          onSubmit={(values) => {
-            if (!values.id)
-              createOrganization(values).then((res) => {
-                addOrganization(res);
-                setModalOpen(false);
-              });
-            else {
-              updateOrganization(values).then((res) => {
-                editOrganization(res);
-                setModalOpen(false);
-              });
+          onSubmit={async (values, setAsDefault) => {
+            let orgId = values.id;
+            if (!values.id) {
+              const newOrganization = await createOrganization(values);
+              addOrganization(newOrganization);
+              orgId = newOrganization.id;
+            } else {
+              const updatedOrganization = await updateOrganization(values);
+              editOrganization(updatedOrganization);
             }
+            if (
+              setAsDefault &&
+              orgId &&
+              user?.selectedOrganization?.id !== orgId
+            ) {
+              await api.updateProfileOrganization(orgId);
+              setLogoutAlert(true);
+            }
+            setModalOpen(false);
           }}
           onCancel={() => setModalOpen(false)}
         />
       </Modal>
+      <AlertDialog
+        isOpen={logoutAlert}
+        title="Logout"
+        description="Once default organization is changed, you will need to re-login"
+        onOk={() => {
+          setLogoutAlert(false);
+          logout();
+        }}
+      />
     </>
   );
 };

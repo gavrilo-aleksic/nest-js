@@ -1,14 +1,23 @@
 import { Box } from '@mui/system';
 import { Organization } from '../../services/organization.service';
-import React from 'react';
-import { TextField } from '@mui/material';
-import Button from '@mui/material/Button';
+import React, { useContext } from 'react';
+import { Checkbox, FormControlLabel, TextField } from '@mui/material';
 import { getFormData } from '../../services/form.utils';
 import ActionButtons from '../ActionButtons';
 
+import './OrganizationDetails.css';
+import { UserContext } from '../../contexts/User.context';
+interface OrganizationDetailsValues {
+  name: string;
+  displayName: string;
+  setAsDefaultOrganization?: boolean;
+}
 interface OrganizationDetailsProps {
   organization?: Organization | null;
-  onSubmit: (organization: Partial<Organization>) => void;
+  onSubmit: (
+    organization: Partial<Organization>,
+    setAsDefaultOrganization?: boolean,
+  ) => void;
   onCancel: () => void;
 }
 const OrganizationDetails = React.forwardRef(
@@ -16,30 +25,23 @@ const OrganizationDetails = React.forwardRef(
     { organization, onSubmit, onCancel }: OrganizationDetailsProps,
     ref: any,
   ) => {
+    const { user } = useContext(UserContext);
     return (
       <Box
         component="form"
         onSubmit={(event: any) => {
           event.preventDefault();
-          const formData = getFormData<{ name: string; displayName: string }>(
+          const formData = getFormData<OrganizationDetailsValues>(
             event.currentTarget,
           );
-          onSubmit({ ...formData, id: organization?.id });
+          onSubmit(
+            { ...formData, id: organization?.id },
+            formData.setAsDefaultOrganization,
+          );
         }}
         sx={{ mt: 1 }}
         ref={ref}
-        style={{
-          position: 'absolute' as 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          boxShadow: '24',
-          display: 'flex',
-          flexDirection: 'column',
-          backgroundColor: 'white',
-          padding: '20px',
-          width: '500px',
-        }}
+        className="organization-details__wrapper"
       >
         <p>
           {organization?.id
@@ -59,6 +61,19 @@ const OrganizationDetails = React.forwardRef(
           name="displayName"
           label="Display Name"
           defaultValue={organization?.displayName || ''}
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              name="setAsDefaultOrganization"
+              defaultChecked={
+                user?.selectedOrganization?.id === organization?.id
+              }
+              value={true}
+            />
+          }
+          name="setAsDefaultOrganization"
+          label="Set as Default"
         />
         <ActionButtons onCancel={onCancel} />
       </Box>

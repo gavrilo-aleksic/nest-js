@@ -14,9 +14,15 @@ const getHeaders = () => {
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 1000,
-  headers: getHeaders(),
 });
 
+// Map Authorization Header
+axiosInstance.interceptors.request.use((config) => {
+  config.headers = { ...config.headers, ...(getHeaders() || {}) };
+  return config;
+});
+
+// Redirect to Login page if session expires
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
@@ -53,6 +59,11 @@ const getOrganizations = () =>
 const createOrganization = (organization: Partial<Organization>) =>
   axiosInstance.post(`/organization`, organization).then((e) => e.data);
 
+const updateProfileOrganization = (organizationId: string) =>
+  axiosInstance
+    .put(`/auth`, { selectedOrganizationId: organizationId })
+    .then((e) => e.data);
+
 const updateOrganization = (organization: Partial<Organization>) =>
   axiosInstance
     .put(`/organization/${organization.id}`, organization)
@@ -72,6 +83,7 @@ const api = {
   createAttribute,
   createOrganization,
   updateOrganization,
+  updateProfileOrganization,
 };
 
 export default api;

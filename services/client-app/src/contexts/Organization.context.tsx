@@ -1,8 +1,10 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { isLoggedIn } from '../services/auth.service';
 import {
   fetchOrganizations,
   Organization,
 } from '../services/organization.service';
+import { UserContext } from './User.context';
 
 interface OrganizationContextValues {
   organizations: Organization[];
@@ -20,10 +22,11 @@ export const OrganizationContext = createContext(defaultValue);
 
 const OrganizationProvider = ({ children }: any) => {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    fetchOrganizations().then((result) => setOrganizations(result));
-  }, []);
+    if (user) fetchOrganizations().then((result) => setOrganizations(result));
+  }, [user]);
 
   const addOrganization = (organization: Organization) => {
     setOrganizations([organization, ...organizations]);

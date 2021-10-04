@@ -22,14 +22,16 @@ export const UserContext = React.createContext(defaultValue);
 
 const UserProvider = ({ children }: any) => {
   const [user, setUser] = useState<UserProfile>(null);
+
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
-    if (jwt) {
+    if (jwt && !user) {
       fetchUserProfile().then((res) => {
         setUser(res);
       });
     }
   }, []);
+
   return (
     <UserContext.Provider
       value={{
