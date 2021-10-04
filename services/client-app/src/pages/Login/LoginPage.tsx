@@ -36,18 +36,19 @@ const Copyright = (props: any) => {
 
 const LoginPage = () => {
   const { push } = useHistory();
-  const { user, setUser } = React.useContext(UserContext);
+  const { setUser } = React.useContext(UserContext);
   const [registerModal, setRegisterModal] = React.useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { username, password } = getFormData<{
+    const { username, password, rememberMe } = getFormData<{
       username: string;
       password: string;
+      rememberMe: boolean;
     }>(event.currentTarget);
 
     if (username && password) {
-      loginUser(username, password).then((token) => {
+      loginUser(username, password, rememberMe).then((token) => {
         fetchUserProfile().then((res) => {
           setUser(res);
           push('/home');
@@ -94,7 +95,9 @@ const LoginPage = () => {
             autoComplete="current-password"
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              <Checkbox value="true" color="primary" name="rememberMe" />
+            }
             label="Remember me"
           />
           <Button

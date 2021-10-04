@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { isLoggedIn } from '../services/auth.service';
 import {
   fetchOrganizations,
   Organization,

@@ -1,6 +1,7 @@
-import { TextField, Button } from '@mui/material';
+import { TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
+import ActionButtons from '../../../components/ActionButtons';
 
 interface CreateUserModalProps {
   onSubmit: (username: string, password: string) => void;
@@ -74,12 +75,7 @@ const CreateUserModal = React.forwardRef(
             }))
           }
         />
-        <Button type="submit" variant="contained">
-          Create Account
-        </Button>
-        <Button onClick={onCancel} type="button" variant="contained">
-          Cancel
-        </Button>
+        <ActionButtons onCancel={onCancel} />
       </Box>
     );
   },

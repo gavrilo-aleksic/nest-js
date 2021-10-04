@@ -30,7 +30,7 @@ const UserProvider = ({ children }: any) => {
         setUser(res);
       });
     }
-  }, []);
+  }, [user]);
 
   return (
     <UserContext.Provider

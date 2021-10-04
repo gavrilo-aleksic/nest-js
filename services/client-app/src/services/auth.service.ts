@@ -1,7 +1,11 @@
 import api from './api';
 
-export const loginUser = async (username: string, password: string) => {
-  const result = await api.login(username, password);
+export const loginUser = async (
+  username: string,
+  password: string,
+  rememberMe?: boolean,
+) => {
+  const result = await api.login(username, password, rememberMe);
   if (result.accessToken) {
     localStorage.setItem('jwt', result.accessToken);
     return Promise.resolve(result.accessToken);

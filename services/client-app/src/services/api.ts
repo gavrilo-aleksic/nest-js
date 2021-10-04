@@ -47,8 +47,11 @@ const registerUser = (
 const login = (
   username: string,
   password: string,
+  rememberMe?: boolean,
 ): Promise<{ accessToken: string }> =>
-  axiosInstance.post(`/auth/login`, { username, password }).then((e) => e.data);
+  axiosInstance
+    .post(`/auth/login`, { username, password, rememberMe })
+    .then((e) => e.data);
 
 const getUserProfile = () =>
   axiosInstance.get(`/auth/profile`).then((e) => e.data);

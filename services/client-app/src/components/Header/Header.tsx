@@ -4,18 +4,18 @@ import {
   ListItemIcon,
   ListItemText,
   Menu,
-  Badge,
   IconButton,
   Divider,
   MenuItem,
   Toolbar,
   Typography,
 } from '@mui/material';
+import { AccountCircle } from '@material-ui/icons';
 import { Box } from '@mui/system';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../../contexts/User.context';
+import { logout } from '../../services/auth.service';
 
 import './Header.css';
 
@@ -41,10 +41,8 @@ const Header = () => {
           <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
             Dashboard
           </Typography>
-          <IconButton onClick={handleMenuItemClick}>
-            <Badge color="secondary">
-              <PersonOutlineIcon />
-            </Badge>
+          <IconButton onClick={handleMenuItemClick} color="inherit">
+            <AccountCircle />
           </IconButton>
           <Menu
             className="app-header__menu"
@@ -60,7 +58,7 @@ const Header = () => {
               </ListItemButton>
             </MenuItem>
             <Divider />
-            <MenuItem onClick={(event) => handleMenuItemClick(event)}>
+            <MenuItem onClick={() => logout()}>
               <ListItemButton>
                 <ListItemIcon>
                   <LogoutIcon />

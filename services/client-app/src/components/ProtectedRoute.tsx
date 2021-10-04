@@ -12,12 +12,15 @@ const ProtectedRoute = ({
   ...restOfProps
 }: ProtectedRouteProps) => {
   const { user } = useContext(UserContext);
+  const token = localStorage.getItem('jwt');
   return (
     <Route
       exact
       path={path}
       {...restOfProps}
-      render={(props) => (user ? <>{children}</> : <Redirect to="/login" />)}
+      render={(props) =>
+        user || token ? <>{children}</> : <Redirect to="/login" />
+      }
     />
   );
 };

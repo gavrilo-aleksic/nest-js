@@ -27,8 +27,8 @@ export class AuthController {
 
   @UseGuards(AuthGuard('local'))
   @Post(Routes.auth.login)
-  async login(@Request() request: any) {
-    return this.authService.createAccessToken(request.user);
+  async login(@Request() request: any, @Body() body: { rememberMe: boolean }) {
+    return this.authService.createAccessToken(request.user, body?.rememberMe);
   }
 
   @UseGuards(AuthGuard('jwt'))

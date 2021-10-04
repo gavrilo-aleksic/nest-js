@@ -12,8 +12,6 @@ import {
   validateEnvironment,
 } from './settings/environment.settings';
 import { AttributeModule } from './modules/attributes/attribute.module';
-import { APP_GUARD } from '@nestjs/core';
-import { OrganizationGuard } from './shared/guards/organization.guard';
 
 @Module({
   imports: [

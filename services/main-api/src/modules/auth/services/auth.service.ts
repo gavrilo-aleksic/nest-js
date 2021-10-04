@@ -73,7 +73,7 @@ export class AuthService {
     return null;
   }
 
-  async createAccessToken(user: UserModel) {
+  async createAccessToken(user: UserModel, rememberMe = false) {
     const payload: IJWT = {
       username: user.username,
       sub: user.id,
@@ -81,7 +81,9 @@ export class AuthService {
       roles: user.getRoles(user.selectedOrganization?.id),
     };
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload, {
+        expiresIn: !rememberMe ? '1h' : '7d',
+      }),
     };
   }
 

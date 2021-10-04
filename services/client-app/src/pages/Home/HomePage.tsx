@@ -12,16 +12,15 @@ import {
   Organization,
   updateOrganization,
 } from '../../services/organization.service';
-
-import './HomePage.css';
 import { UserContext } from '../../contexts/User.context';
 import AppTable from '../../components/Table/Table';
 import OrganizationDetails from '../../components/OrganizationDetails/OrganizationDetails';
-import SideMenu from '../../components/SideMenu/SideMenu';
 import { OrganizationContext } from '../../contexts/Organization.context';
 import api from '../../services/api';
 import AlertDialog from '../../components/AlertDialog';
 import { logout } from '../../services/auth.service';
+
+import './HomePage.css';
 
 const HomePage = () => {
   const [attributes, setAttributes] = useState<Attribute[]>([]);
@@ -32,18 +31,16 @@ const HomePage = () => {
   const [logoutAlert, setLogoutAlert] = useState(false);
   const [selectedOrganization, setSelectedOrganization] =
     useState<Organization | null>(user?.selectedOrganization || null);
-
   useEffect(() => {
     if (user?.selectedOrganization) {
       fetchAttributes().then((result) => setAttributes(result));
     }
   }, [user?.selectedOrganization]);
-  console.log(user);
+
   return (
     <>
       <Header />
       <div style={{ display: 'flex' }}>
-        <SideMenu />
         <div
           style={{
             display: 'flex',
@@ -51,6 +48,8 @@ const HomePage = () => {
             padding: '50px',
             flexWrap: 'wrap',
             backgroundColor: '#f5f5f5',
+            width: '100vw',
+            marginTop: '40px',
           }}
         >
           <div>
@@ -117,7 +116,7 @@ const HomePage = () => {
             </List>
           </Paper>
           <div>
-            {!selectedOrganization ? (
+            {!user?.selectedOrganization ? (
               <Stack spacing={2} sx={{ width: '100%' }}>
                 <Alert severity="error">Missing selected organization!</Alert>
               </Stack>
