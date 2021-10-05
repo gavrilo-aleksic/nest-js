@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { IPagination } from 'src/@types/api';
 import { Repository } from 'src/shared/repository';
 import { OrganizationModel } from '../models/organization.model';
 
@@ -8,7 +9,7 @@ export class OrganizationRepository extends Repository<OrganizationModel> {
     super(OrganizationModel);
   }
 
-  async getAll(userId: number) {
+  async getAll(userId: number, pagination?: IPagination) {
     return (await this.getRepository())
       .createQueryBuilder('organization')
       .innerJoin(
@@ -17,7 +18,9 @@ export class OrganizationRepository extends Repository<OrganizationModel> {
         'userOrganization.userId = :userId',
         { userId },
       )
-      .orderBy('organization.createdAt')
+      .orderBy('organization.createdAt', 'DESC')
+      .take(pagination?.pageSize || 30)
+      .skip(pagination?.pageNumber || 0)
       .getMany();
   }
 

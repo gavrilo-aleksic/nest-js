@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { IPagination } from 'src/@types/api';
 import { CreateAttributeDTO } from '../models/attribute.dto';
 import { AttributeModel } from '../models/attribute.model';
 import { AttributeRepository } from '../repositories/attribute.repository';
@@ -7,8 +8,8 @@ import { AttributeRepository } from '../repositories/attribute.repository';
 export class AttributeService {
   constructor(private attributeRepository: AttributeRepository) {}
 
-  async getAll(organizationId: number) {
-    return this.attributeRepository.getAll(organizationId);
+  async getAll(organizationId: number, pagination?: IPagination) {
+    return this.attributeRepository.getAll(organizationId, pagination);
   }
 
   async create(organizationId: number, attribute: CreateAttributeDTO) {

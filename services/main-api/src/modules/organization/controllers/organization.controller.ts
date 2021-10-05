@@ -51,6 +51,9 @@ export class OrganizationController {
   @UseGuards(AuthGuard('jwt'))
   @Get()
   async getOrganizations(@Request() request: IRequest) {
-    return this.organizationService.getAll(request.user.sub);
+    return this.organizationService.getAll(
+      request.user.sub,
+      request.pagination,
+    );
   }
 }

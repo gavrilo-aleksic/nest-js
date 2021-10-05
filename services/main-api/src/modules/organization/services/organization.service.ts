@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { IPagination } from 'src/@types/api';
 import { UserOrganizationModel } from 'src/modules/auth/models/user-organization.model';
 import { UserOrganizationRepository } from 'src/modules/auth/repositories/user-organization.repository';
 import { OrganizationPostDTO } from '../models/organization.dto';
@@ -12,8 +13,8 @@ export class OrganizationService {
     private userOrganizationRepository: UserOrganizationRepository,
   ) {}
 
-  async getAll(userId: number) {
-    return this.organizationRepository.getAll(userId);
+  async getAll(userId: number, pagination?: IPagination) {
+    return this.organizationRepository.getAll(userId, pagination);
   }
 
   async getOne(id: number, userId: number) {

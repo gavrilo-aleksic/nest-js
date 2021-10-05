@@ -25,7 +25,10 @@ export class AttributeController {
 
   @Get()
   async getAll(@Request() request: IRequest) {
-    return this.attributeService.getAll(request.organizationId);
+    return this.attributeService.getAll(
+      request.organizationId,
+      request.pagination,
+    );
   }
 
   @Post()
