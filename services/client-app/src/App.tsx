@@ -16,14 +16,14 @@ const App = () => {
         <Route path="/login" exact>
           <LoginPage />
         </Route>
-        <OrganizationProvider>
-          <ProtectedRoute path={['/home', '/']}>
-            <HomePage />
-          </ProtectedRoute>
-          <ProtectedRoute path="/organizations">
+        <ProtectedRoute path={['/home', '/']}>
+          <HomePage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/organizations">
+          <OrganizationProvider>
             <OrganizationsPage />
-          </ProtectedRoute>
-        </OrganizationProvider>
+          </OrganizationProvider>
+        </ProtectedRoute>
       </SwitchWithRedirect>
     </UserProvider>
   );

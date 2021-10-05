@@ -9,13 +9,9 @@ import {
   TableContainer,
 } from '@mui/material';
 
-const AppTable = ({
-  rows,
-  columns,
-  style,
-  onClick,
-}: {
+interface AppTableProps {
   onClick?: (row: any) => void;
+  onSingleClick?: (row: any) => void;
   rows: any[];
   style?: CSSProperties;
   columns: {
@@ -23,7 +19,14 @@ const AppTable = ({
     value: string;
     transform?: (value: any) => any;
   }[];
-}) => {
+}
+const AppTable = ({
+  rows,
+  columns,
+  style,
+  onClick,
+  onSingleClick,
+}: AppTableProps) => {
   const [selectedRow, setSelectedRow] = useState<number | undefined>();
 
   return (
@@ -49,6 +52,7 @@ const AppTable = ({
               selected={Boolean(selectedRow === row.id)}
               onClick={() => {
                 setSelectedRow(row.id);
+                onSingleClick?.(row);
               }}
               onDoubleClick={() => onClick?.(row)}
             >

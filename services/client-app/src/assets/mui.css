@@ -1,0 +1,11 @@
+.MuiButton-root {
+  min-width: max-content;
+}
+.MuiTableRow-root:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+.MuiTableCell-root.MuiTableCell-head {
+  font-weight: bold;
+}

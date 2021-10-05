@@ -1,10 +1,8 @@
-.MuiTableRow-root:hover {
-  background-color: lightblue;
-  cursor: pointer;
-}
+@import url('./assets/variables.css');
+@import url('./assets/mui.css');
 
-.MuiTableCell-root.MuiTableCell-head {
-  font-weight: bold;
+* {
+  box-sizing: border-box;
 }
 
 .app-title-banner {
@@ -15,8 +13,4 @@
 
 .typography-blue {
   color: blue;
-}
-
-.app-header__menu .MuiPaper-root {
-  width: 150px;
 }

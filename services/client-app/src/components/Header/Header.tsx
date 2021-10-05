@@ -10,7 +10,6 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { AccountCircle } from '@material-ui/icons';
 import { Box } from '@mui/system';
 import LogoutIcon from '@mui/icons-material/Logout';
 import React, { useContext, useState } from 'react';
@@ -18,8 +17,9 @@ import { UserContext } from '../../contexts/User.context';
 import { logout } from '../../services/auth.service';
 
 import './Header.css';
+import { AccountCircle } from '@material-ui/icons';
 
-const Header = () => {
+const Header = ({ title }: { title: string }) => {
   const { user } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,7 +39,7 @@ const Header = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
-            Dashboard
+            {title}
           </Typography>
           <IconButton onClick={handleMenuItemClick} color="inherit">
             <AccountCircle />

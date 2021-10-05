@@ -1,0 +1,10 @@
+.details-list__wrapper {
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+}
+
+.details-list__element-wrapper {
+  display: flex;
+  justify-content: space-between;
+}

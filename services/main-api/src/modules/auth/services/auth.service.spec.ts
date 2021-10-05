@@ -115,11 +115,15 @@ describe('Test [AuthService]', () => {
 
       const mockUser = createMockUser();
       await authService.createAccessToken(mockUser);
-      expect(jwtSign).toHaveBeenCalledWith({
-        username: mockUser.username,
-        sub: mockUser.id,
-        selectedOrganizationId: mockUser.selectedOrganization?.id,
-      });
+      expect(jwtSign).toHaveBeenCalledWith(
+        {
+          username: mockUser.username,
+          sub: mockUser.id,
+          selectedOrganizationId: mockUser.selectedOrganization?.id,
+          roles: undefined,
+        },
+        { expiresIn: '1h' },
+      );
     });
   });
 });

@@ -1,0 +1,18 @@
+.page__inner-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.page__navigation {
+  display: flex;
+  margin: 5px;
+  gap: var(--button-gap);
+}
+
+.page__inner-content {
+  display: flex;
+  gap: 20px;
+  padding: var(--button-gap);
+  background-color: var(--page-background-color);
+  width: 100%;
+}

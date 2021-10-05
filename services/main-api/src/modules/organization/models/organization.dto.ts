@@ -2,6 +2,9 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class OrganizationPostDTO {
   @IsString()
+  name: string;
+
+  @IsString()
   @IsOptional()
-  name?: string;
+  displayName?: string;
 }

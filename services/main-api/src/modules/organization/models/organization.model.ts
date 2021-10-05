@@ -21,6 +21,9 @@ export class OrganizationModel {
   @Column({ nullable: false })
   public name: string;
 
+  @Column({ nullable: true })
+  public displayName: string;
+
   @CreateDateColumn()
   public createdAt: Date;
 

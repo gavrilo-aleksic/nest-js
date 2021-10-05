@@ -3,7 +3,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { UserContext } from '../contexts/User.context';
 
 interface ProtectedRouteProps {
-  children: any;
+  children: IReactChildren;
   path: string | string[];
 }
 const ProtectedRoute = ({
