@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUserProfile } from '../services/auth.service';
 import { Organization } from '../services/organization.service';
+import { io } from 'socket.io-client';
 
 export type UserProfile = {
   username: string;
@@ -28,6 +29,11 @@ const UserProvider = ({ children }: any) => {
     if (jwt && !user) {
       fetchUserProfile().then((res) => {
         setUser(res);
+        const socket = io('http://localhost:3000');
+        socket.connect();
+        socket.on('events', (message) => {
+          console.log(message);
+        });
       });
     }
   }, [user]);

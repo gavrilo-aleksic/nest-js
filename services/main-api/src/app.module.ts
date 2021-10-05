@@ -12,6 +12,8 @@ import {
   validateEnvironment,
 } from './settings/environment.settings';
 import { AttributeModule } from './modules/attributes/attribute.module';
+import { EventsModule } from './modules/events/events.module';
+import { LoggerModule } from './modules/logger/logger.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { AttributeModule } from './modules/attributes/attribute.module';
     HealthModule,
     OrganizationModule,
     AttributeModule,
+    EventsModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

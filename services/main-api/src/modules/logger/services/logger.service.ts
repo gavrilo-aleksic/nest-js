@@ -1,16 +1,19 @@
-import { ConsoleLogger, HttpException, LoggerService } from '@nestjs/common';
+import {
+  ConsoleLogger,
+  HttpException,
+  Injectable,
+  LoggerService,
+} from '@nestjs/common';
 import { ILogError } from 'src/@types/api';
 import { MongoDBService } from './mongoDB.service';
 
+@Injectable()
 export class CustomLoggerService
   extends ConsoleLogger
   implements LoggerService
 {
-  private mongoDBService: MongoDBService;
-
-  constructor() {
+  constructor(private mongoDBService: MongoDBService) {
     super();
-    this.mongoDBService = new MongoDBService();
     this.mongoDBService.connect();
   }
 

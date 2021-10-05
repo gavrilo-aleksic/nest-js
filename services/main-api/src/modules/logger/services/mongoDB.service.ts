@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { connect, model, Schema, Model } from 'mongoose';
 import { ILogError } from 'src/@types/api';
+import { EventsGateway } from 'src/modules/events/events.gateway';
 
 interface IMessageLog {
   error: string;
@@ -19,7 +20,7 @@ export class MongoDBService {
     stack: String,
   });
 
-  constructor() {
+  constructor(private eventsGateway: EventsGateway) {
     this.Error = model('Error', this.errorSchema);
   }
 
@@ -35,6 +36,7 @@ export class MongoDBService {
       date: new Date(),
       stack: value.stack,
     });
+    this.eventsGateway.sendMessage('TEST MESSAGE');
     return error.save();
   }
 }
