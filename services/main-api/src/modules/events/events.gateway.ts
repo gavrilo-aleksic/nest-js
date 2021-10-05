@@ -8,6 +8,7 @@ import {
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
+import { JwtService } from '@nestjs/jwt';
 
 const messagingProvider = 'events';
 
@@ -15,6 +16,7 @@ const messagingProvider = 'events';
 export class EventsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+  constructor(private jwtService: JwtService) {}
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('EventsGateway');
 
@@ -36,6 +38,46 @@ export class EventsGateway
   }
 
   handleConnection(client: Socket, ...args: any[]) {
-    this.logger.log(`Client connected: ${client.id}`);
+    this.verifyClient(client)
+      .then((decoded: IJWT) => {
+        this.logger.log(
+          `WS:// Client Connected: ${JSON.stringify({
+            id: decoded.sub,
+            username: decoded.username,
+          })}`,
+        );
+        client.data.sub = decoded.sub;
+      })
+      .catch((e) => {
+        this.logger.log(`Client Rejected: ${client.id}`);
+      });
+  }
+
+  async verifyClient(client: Socket) {
+    if (!client.handshake.headers.authorization) {
+      return client.client._disconnect();
+    }
+    const token = client.handshake.headers.authorization;
+    return this.jwtService.verifyAsync(token).catch((er) => {
+      this.sendToSpecificClient(client, 'INVALID AUTHENTICATION TOKEN');
+      client.client._disconnect();
+      return Promise.reject();
+    });
+  }
+
+  sendToSpecificClient(client: Socket, message: any) {
+    client.emit(messagingProvider, message);
+  }
+
+  sendToUser(sub: number, message: any) {
+    let client: Socket;
+    this.server.sockets.sockets.forEach((socket) => {
+      if (socket.data.sub === sub) {
+        client = socket;
+      }
+    });
+    if (client) {
+      this.sendToSpecificClient(client, JSON.stringify(message));
+    }
   }
 }

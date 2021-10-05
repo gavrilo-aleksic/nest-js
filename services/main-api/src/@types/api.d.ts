@@ -16,7 +16,7 @@ export type ILogError = {
     code: string;
     message: string;
   };
-  url: errorDetails.url;
-  user: errorDetails.user;
+  url: string;
+  user: IJWT;
   stack?: any;
 };

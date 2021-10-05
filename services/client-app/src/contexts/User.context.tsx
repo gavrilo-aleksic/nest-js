@@ -12,27 +12,34 @@ export type UserProfile = {
 interface UserContextValues {
   user: UserProfile;
   setUser: (user: any) => void;
+  messages: { statusCode: string; message: string }[];
 }
 
 const defaultValue: UserContextValues = {
   user: null,
   setUser: () => {},
+  messages: [],
 };
 
 export const UserContext = React.createContext(defaultValue);
 
 const UserProvider = ({ children }: any) => {
   const [user, setUser] = useState<UserProfile>(null);
+  const [messages, setMessages] = useState<
+    { statusCode: string; message: string }[]
+  >([]);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
     if (jwt && !user) {
       fetchUserProfile().then((res) => {
         setUser(res);
-        const socket = io('http://localhost:3000');
+        const socket = io('http://localhost:3000', {
+          extraHeaders: { authorization: jwt },
+        });
         socket.connect();
         socket.on('events', (message) => {
-          console.log(message);
+          setMessages((oldMessages) => [JSON.parse(message), ...oldMessages]);
         });
       });
     }
@@ -43,6 +50,7 @@ const UserProvider = ({ children }: any) => {
       value={{
         user,
         setUser,
+        messages,
       }}
     >
       {children}
