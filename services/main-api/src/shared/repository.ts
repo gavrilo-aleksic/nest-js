@@ -32,7 +32,7 @@ export class Repository<EntityType extends { id?: number; [k: string]: any }> {
     return (await this.getRepository()).update(entity.id, entity);
   }
 
-  async deleteById(id: string) {
+  async deleteById(id: number) {
     return (await this.getRepository()).delete(id);
   }
 }

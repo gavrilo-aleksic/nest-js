@@ -9,12 +9,14 @@ interface OrganizationContextValues {
   organizations: Organization[];
   addOrganization: (organization: Organization) => void;
   editOrganization: (Organization: Organization) => void;
+  removeOrganization: (organizationId: number) => void;
 }
 
 const defaultValue: OrganizationContextValues = {
   organizations: [],
   addOrganization: (organization: Organization) => {},
   editOrganization: (Organization: Organization) => {},
+  removeOrganization: (organizationId: number) => Promise.resolve(),
 };
 
 export const OrganizationContext = createContext(defaultValue);
@@ -40,12 +42,21 @@ const OrganizationProvider = ({ children }: any) => {
     }
   };
 
+  const removeOrganization = (organizationId: number) => {
+    setOrganizations(
+      organizations.filter(
+        (organization) => organization.id !== organizationId,
+      ),
+    );
+  };
+
   return (
     <OrganizationContext.Provider
       value={{
         organizations,
         addOrganization,
         editOrganization,
+        removeOrganization,
       }}
     >
       {children}

@@ -4,31 +4,36 @@ export const Exceptions = {
   auth: {
     NameTakenException: (username: string) =>
       new BadRequestException({
-        error: `Username ${username} is already taken`,
-        code: '10001',
+        message: `Username ${username} is already taken`,
+        statusCode: '10001',
       }),
     NotFoundException: (id: number) =>
       new NotFoundException({
-        error: `User ${id} does not exist`,
-        code: '10002',
+        message: `User ${id} does not exist`,
+        statusCode: '10002',
       }),
     InvalidUserIdParam: (id: any) =>
       new BadRequestException({
-        error: `User id provided ->  ${id} is not valid ID`,
-        code: '10003',
+        message: `User id provided ->  ${id} is not valid ID`,
+        statusCode: '10003',
       }),
   },
   organization: {
     NotFoundException: (id: number) =>
       new NotFoundException({
-        error: `Organization ${id} does not exist`,
-        code: '20002',
+        message: `Organization ${id} does not exist`,
+        statusCode: '20002',
       }),
     NotSelected: () =>
       new BadRequestException({
-        error:
+        message:
           'Organization not provided. Please provide organization as query parameter organizationId or select default organization for user',
-        code: '20003',
+        statusCode: '20003',
+      }),
+    LinkedToUser: (id: number) =>
+      new BadRequestException({
+        message: `Organization with ID=${id} cannot be deleted because user is linked to it`,
+        statusCode: '20004',
       }),
   },
 };

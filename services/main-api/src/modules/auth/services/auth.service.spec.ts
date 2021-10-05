@@ -84,8 +84,8 @@ describe('Test [AuthService]', () => {
       } catch (e) {
         expect(e).toBeInstanceOf(BadRequestException);
         expect(e.response).toEqual({
-          error: 'Username Some New User is already taken',
-          code: '10001',
+          message: 'Username Some New User is already taken',
+          statusCode: '10001',
         });
       }
     });

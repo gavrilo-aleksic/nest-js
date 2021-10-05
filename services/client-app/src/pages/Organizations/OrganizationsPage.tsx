@@ -1,4 +1,4 @@
-import { Modal, Button } from '@mui/material';
+import { Modal, Button, AlertColor } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Page from '../../components/Page/Page';
 import AppTable from '../../components/Table/Table';
@@ -6,6 +6,7 @@ import { useContext, useState } from 'react';
 import { OrganizationContext } from '../../contexts/Organization.context';
 import {
   createOrganization,
+  deleteOrganization,
   Organization,
   updateOrganization,
 } from '../../services/organization.service';
@@ -14,19 +15,31 @@ import OrganizationDetails from '../../components/OrganizationDetails/Organizati
 import api from '../../services/api';
 import AlertDialog from '../../components/AlertDialog';
 import { logout } from '../../services/auth.service';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DetailsList from '../../components/DetailsList/DetailsList';
+import Toast from '../../components/Toast';
 
 import './OrganizationsPage.css';
-import DetailsList from '../../components/DetailsList/DetailsList';
 
 const OrganizationsPage = () => {
   const { user } = useContext(UserContext);
+  const {
+    addOrganization,
+    organizations,
+    editOrganization,
+    removeOrganization,
+  } = useContext(OrganizationContext);
 
-  const { addOrganization, organizations, editOrganization } =
-    useContext(OrganizationContext);
   const [selectedOrganization, setSelectedOrganization] =
     useState<Organization | null>(user?.selectedOrganization || null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [logoutAlert, setLogoutAlert] = useState(false);
+  const [alertType, setAlertType] = useState<
+    'CONFIRM_DEFAULT' | 'CONFIRM_DELETE' | null
+  >(null);
+  const [toast, setToast] = useState<{
+    text: string;
+    variant: AlertColor;
+  } | null>(null);
 
   const handleSubmitOrganization = async (
     values: Partial<Organization>,
@@ -43,13 +56,19 @@ const OrganizationsPage = () => {
     }
     if (setAsDefault && orgId && user?.selectedOrganization?.id !== orgId) {
       await api.updateProfileOrganization(orgId);
-      setLogoutAlert(true);
+      setAlertType('CONFIRM_DEFAULT');
     }
     setModalOpen(false);
   };
 
   return (
     <Page title="Organizations">
+      <Toast
+        text={toast?.text || ''}
+        show={!!toast}
+        severity={toast?.variant || 'success'}
+        onClose={() => setToast(null)}
+      />
       <div className="organization-page__wrapper">
         <AppTable
           onClick={(row) => {
@@ -98,6 +117,16 @@ const OrganizationsPage = () => {
               },
             ]}
           />
+          <Button
+            endIcon={<DeleteIcon />}
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              setAlertType('CONFIRM_DELETE');
+            }}
+          >
+            Delete
+          </Button>
         </div>
       </div>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
@@ -108,13 +137,39 @@ const OrganizationsPage = () => {
         />
       </Modal>
       <AlertDialog
-        isOpen={logoutAlert}
+        isOpen={alertType === 'CONFIRM_DEFAULT'}
         title="Logout"
         description="Once default organization is changed, you will need to re-login"
         onOk={() => {
-          setLogoutAlert(false);
+          setAlertType(null);
           logout();
         }}
+      />
+      <AlertDialog
+        isOpen={alertType === 'CONFIRM_DELETE'}
+        title="Delete"
+        description="Are you sure you want to delete this organization?"
+        type="important"
+        onOk={() => {
+          if (!selectedOrganization?.id) return;
+          deleteOrganization(selectedOrganization.id)
+            .then((res) => {
+              setAlertType(null);
+              setToast({
+                variant: 'success',
+                text: `Organization [${selectedOrganization?.name}] successfully deleted`,
+              });
+              removeOrganization(selectedOrganization.id);
+            })
+            .catch((error: IApiError) => {
+              setToast({ variant: 'error', text: error.message });
+              setAlertType(null);
+            })
+            .finally(() => {
+              setSelectedOrganization(null);
+            });
+        }}
+        onClose={() => setAlertType(null)}
       />
     </Page>
   );

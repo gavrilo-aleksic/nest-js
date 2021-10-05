@@ -5,9 +5,15 @@ interface ActionButtonsProps {
   onOk?: () => void;
   onCancel?: () => void;
   disabled?: boolean;
+  type?: 'important';
 }
 
-const ActionButtons = ({ onOk, onCancel, disabled }: ActionButtonsProps) => {
+const ActionButtons = ({
+  onOk,
+  onCancel,
+  disabled,
+  type,
+}: ActionButtonsProps) => {
   return (
     <Stack direction="row" spacing={2} style={{ justifyContent: 'flex-end' }}>
       {onCancel && (
@@ -21,6 +27,7 @@ const ActionButtons = ({ onOk, onCancel, disabled }: ActionButtonsProps) => {
         variant="contained"
         size="large"
         onClick={onOk}
+        color={type === 'important' ? 'error' : undefined}
       >
         Submit
       </Button>

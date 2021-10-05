@@ -24,6 +24,9 @@ const App = () => {
             <OrganizationsPage />
           </OrganizationProvider>
         </ProtectedRoute>
+        <ProtectedRoute path="/attributes">
+          {/* <AttributesPage /> */}
+        </ProtectedRoute>
       </SwitchWithRedirect>
     </UserProvider>
   );

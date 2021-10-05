@@ -19,6 +19,7 @@ export const ENVIRONMENT_KEYS = {
   MAIL_HOST: 'MAIL_HOST',
   MAIL_PORT: 'MAIL_PORT',
   ENV: 'ENV',
+  MONGO_DB_CONNECTION: 'MONGO_DB_CONNECTION',
 } as const;
 
 class EnvironmentVariables {
@@ -54,6 +55,9 @@ class EnvironmentVariables {
 
   @IsNumber()
   MAIL_PORT: number;
+
+  @IsString()
+  MONGO_DB_CONNECTION: string;
 }
 
 export const validateEnvironment = (config: Record<string, unknown>) => {

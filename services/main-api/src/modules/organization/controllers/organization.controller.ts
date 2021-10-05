@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -37,6 +38,15 @@ export class OrganizationController {
     @Request() request: IRequest,
   ) {
     return this.organizationService.update(id, request.user.sub, organization);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete(':id')
+  async deleteOrganization(
+    @Param('id', ParseIntPipe) id: number,
+    @Request() request: IRequest,
+  ) {
+    return this.organizationService.delete(request.user.sub, id);
   }
 
   @UseGuards(AuthGuard('jwt'))

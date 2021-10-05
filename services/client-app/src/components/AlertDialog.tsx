@@ -12,6 +12,7 @@ interface AlertDialogProps {
   onOk?: () => void;
   onClose?: () => void;
   isOpen?: boolean;
+  type?: 'important';
 }
 
 const AlertDialog = ({
@@ -20,6 +21,7 @@ const AlertDialog = ({
   onOk,
   onClose,
   isOpen,
+  type,
 }: AlertDialogProps) => {
   return (
     <Dialog
@@ -32,7 +34,7 @@ const AlertDialog = ({
         <DialogContentText>{description}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <ActionButtons onOk={onOk} onCancel={onClose} />
+        <ActionButtons onOk={onOk} onCancel={onClose} type={type} />
       </DialogActions>
     </Dialog>
   );

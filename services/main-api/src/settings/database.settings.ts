@@ -19,7 +19,7 @@ const databaseSettings = async (
     cli: {
       migrationsDir: 'migration',
     },
-    logging: configService.get<string>('ENV') === 'test' ? false : true,
+    logging: false, //configService.get<string>('ENV') === 'test' ? false : true,
     synchronize: true,
   };
 };

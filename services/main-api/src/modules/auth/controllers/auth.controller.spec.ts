@@ -83,8 +83,8 @@ describe('Test Auth Controller', () => {
         .send(newUser)
         .expect(400);
       expect(response.body).toEqual({
-        error: 'Username galeksic is already taken',
-        code: '10001',
+        message: 'Username galeksic is already taken',
+        statusCode: '10001',
       });
     });
   });
@@ -114,6 +114,7 @@ describe('Test Auth Controller', () => {
           id: 1,
           createdAt: '2021-09-20T10:06:25.319Z',
           updatedAt: '2021-09-20T10:06:25.319Z',
+          displayName: null,
         },
       });
     });

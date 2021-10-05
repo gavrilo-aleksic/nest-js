@@ -1,7 +1,7 @@
 import api from './api';
 
 export type Organization = {
-  id: string;
+  id: number;
   name: string;
   displayName?: string;
   createdAt: Date;
@@ -13,6 +13,7 @@ export const fetchOrganizations = () => {
     res.map((organization: Organization) => ({
       id: organization.id,
       name: organization.name,
+      displayName: organization.displayName,
       createdAt: new Date(organization.createdAt),
       updatedAt: new Date(organization.updatedAt),
     })),
@@ -42,5 +43,11 @@ export const updateOrganization = (organization: Partial<Organization>) => {
       updatedAt: new Date(res.updatedAt),
     };
     return mappedOrganization;
+  });
+};
+
+export const deleteOrganization = (organizationId: number) => {
+  return api.deleteOrganization(organizationId).then((res) => {
+    console.log(res);
   });
 };

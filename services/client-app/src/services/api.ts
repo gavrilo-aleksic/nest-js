@@ -22,6 +22,8 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
+const handledErrorCodes = [400, 404];
+
 // Redirect to Login page if session expires
 axiosInstance.interceptors.response.use(
   (response) => {
@@ -31,6 +33,9 @@ axiosInstance.interceptors.response.use(
     if (error.response.status === 401) {
       localStorage.removeItem('jwt');
       window.location.href = 'http://localhost:3001/login';
+    }
+    if (handledErrorCodes.includes(error.response.status)) {
+      return Promise.reject(error.response.data);
     }
     return Promise.reject(error);
   },
@@ -62,7 +67,7 @@ const getOrganizations = () =>
 const createOrganization = (organization: Partial<Organization>) =>
   axiosInstance.post(`/organization`, organization).then((e) => e.data);
 
-const updateProfileOrganization = (organizationId: string) =>
+const updateProfileOrganization = (organizationId: number) =>
   axiosInstance
     .put(`/auth`, { selectedOrganizationId: organizationId })
     .then((e) => e.data);
@@ -71,6 +76,9 @@ const updateOrganization = (organization: Partial<Organization>) =>
   axiosInstance
     .put(`/organization/${organization.id}`, organization)
     .then((e) => e.data);
+
+const deleteOrganization = (organizationId: number) =>
+  axiosInstance.delete(`/organization/${organizationId}`).then((e) => e.data);
 
 const getAttributes = () => axiosInstance.get(`/attribute`).then((e) => e.data);
 
@@ -87,6 +95,7 @@ const api = {
   createOrganization,
   updateOrganization,
   updateProfileOrganization,
+  deleteOrganization,
 };
 
 export default api;

@@ -9,3 +9,14 @@ export type IRequest = Request & {
   organizationId?: number;
   pagination?: IPagination;
 };
+
+export type ILogError = {
+  error: {
+    raw?: string;
+    code: string;
+    message: string;
+  };
+  url: errorDetails.url;
+  user: errorDetails.user;
+  stack?: any;
+};

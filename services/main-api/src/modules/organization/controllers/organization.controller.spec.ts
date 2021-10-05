@@ -48,4 +48,15 @@ describe('Test Organization Controller', () => {
       expect(body).toMatchObject({ name: 'New Organization For Testing' });
     });
   });
+
+  // describe.only('DELETE /organization', () => {
+  //   it('Should fail to delete organization if it is selected by some user', async () => {
+  //     const accessToken = await getToken(app, 'test', 'test');
+  //     const { body } = await request(app.getHttpServer())
+  //       .delete(`/${Routes.organization.root}/1`)
+  //       .send()
+  //       .set('Authorization', `Bearer ${accessToken}`);
+  //     expect(body).toMatchObject({ name: 'New Organization For Testing' });
+  //   });
+  // });
 });

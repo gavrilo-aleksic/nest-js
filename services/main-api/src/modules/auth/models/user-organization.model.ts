@@ -32,6 +32,7 @@ export class UserOrganizationModel {
 
   @ManyToOne(() => OrganizationModel, {
     nullable: true,
+    onDelete: 'CASCADE',
   })
   public organization: OrganizationModel;
 

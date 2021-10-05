@@ -21,6 +21,9 @@ const Page = ({ children, title }: PageProps) => {
           <Button variant="outlined" onClick={() => push('/organizations')}>
             Organizations
           </Button>
+          <Button variant="outlined" onClick={() => push('/attributes')}>
+            Attributes
+          </Button>
         </div>
         <div className="page__inner-content">{children}</div>
       </div>

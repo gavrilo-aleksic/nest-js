@@ -12,8 +12,9 @@ import {
 export const defaultOrganizationName = () => 'New Organization';
 @Entity()
 export class OrganizationModel {
-  constructor(name: string) {
+  constructor(name: string, displayName?: string) {
     this.name = name;
+    this.displayName = displayName;
   }
   @PrimaryGeneratedColumn()
   public id?: number;
