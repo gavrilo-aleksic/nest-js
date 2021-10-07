@@ -2,6 +2,8 @@ version: '3'
 services:
   main-api:
     container_name: main-api
+    environment:
+      - DATABASE_HOST=postgres
     depends_on:
       - database
     image: nestjs-api-dev:1.0.0
@@ -18,7 +20,8 @@ services:
       - .:/usr/src/app
     restart: unless-stopped
   database:
-    image: 'postgres' # use latest official postgres version
+    container_name: postgres
+    image: 'postgres'
     ports:
       - 5432:5432
     environment:
@@ -28,9 +31,10 @@ services:
     networks:
       - main-network
     volumes:
-      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+      - database-data:/var/lib/postgresql/data/
   pgadmin:
     image: dpage/pgadmin4
+    container_name: pgadmin
     depends_on:
       - database
     ports:
@@ -42,8 +46,8 @@ services:
     networks:
       - main-network
     volumes:
-      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+      - database-data:/var/lib/postgresql/data/
 volumes:
-  database-data: # named volumes can be managed easier using docker-compose
+  database-data:
 networks:
   main-network:
