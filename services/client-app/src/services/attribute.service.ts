@@ -6,6 +6,7 @@ export type AttributeTypeEnum = typeof AttributeTypes[number];
 export type Attribute = {
   id: number;
   name: string;
+  displayName?: string;
   type?: AttributeTypeEnum;
   required?: boolean;
   createdAt: Date;

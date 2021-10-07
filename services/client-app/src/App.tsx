@@ -8,6 +8,8 @@ import OrganizationsPage from './pages/Organizations/OrganizationsPage';
 import UserProvider from './contexts/User.context';
 import OrganizationProvider from './contexts/Organization.context';
 import SwitchWithRedirect from './components/SwitchWithRedirect';
+import AttributesPage from './pages/Attributes/AttributesPage';
+import AttributeProvider from './contexts/Attribute.context';
 
 const App = () => {
   return (
@@ -25,7 +27,9 @@ const App = () => {
           </OrganizationProvider>
         </ProtectedRoute>
         <ProtectedRoute path="/attributes">
-          {/* <AttributesPage /> */}
+          <AttributeProvider>
+            <AttributesPage />
+          </AttributeProvider>
         </ProtectedRoute>
       </SwitchWithRedirect>
     </UserProvider>

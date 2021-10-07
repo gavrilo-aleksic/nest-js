@@ -1,0 +1,11 @@
+.attribute-page__wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.attribute-page__side-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--content-gap);
+}

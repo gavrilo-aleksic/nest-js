@@ -11,7 +11,7 @@ import {
   updateOrganization,
 } from '../../services/organization.service';
 import { UserContext } from '../../contexts/User.context';
-import OrganizationDetails from '../../components/OrganizationDetails/OrganizationDetails';
+import OrganizationDetails from './components/OrganizationDetails/OrganizationDetails';
 import api from '../../services/api';
 import AlertDialog from '../../components/AlertDialog';
 import { logout } from '../../services/auth.service';

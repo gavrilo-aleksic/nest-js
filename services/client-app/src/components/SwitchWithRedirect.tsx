@@ -4,10 +4,10 @@ import { UserContext } from '../contexts/User.context';
 import GlobalLoader from './GlobalLoader/GlobalLoader';
 
 const SwitchWithRedirect = ({ children }: any) => {
-  const { user } = useContext(UserContext);
+  const { user, networkError } = useContext(UserContext);
   const token = localStorage.getItem('jwt');
 
-  if (token && !user) {
+  if (token && !user && !networkError) {
     return <GlobalLoader />;
   }
 

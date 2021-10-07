@@ -30,7 +30,7 @@ export class MongoDBService {
 
   async log(value: ILogError) {
     const error = new this.Error({
-      error: value.error.message,
+      error: JSON.stringify(value.error.message),
       code: value.error.code,
       user: value.user,
       date: new Date(),

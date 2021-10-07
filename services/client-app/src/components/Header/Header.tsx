@@ -41,7 +41,27 @@ const Header = ({ title }: { title: string }) => {
           <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
             {title}
           </Typography>
-          <IconButton onClick={handleMenuItemClick} color="inherit">
+          <IconButton
+            onClick={handleMenuItemClick}
+            color="inherit"
+            style={{ gap: '10px' }}
+          >
+            <div className="header__user-info">
+              <Typography
+                component="div"
+                className="header__user-info-username"
+              >
+                {user?.username}
+              </Typography>
+              <Typography
+                component="div"
+                className="header__user-info-organization"
+              >
+                {user?.selectedOrganization?.displayName ||
+                  user?.selectedOrganization?.name ||
+                  ''}
+              </Typography>
+            </div>
             <AccountCircle />
           </IconButton>
           <Menu

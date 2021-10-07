@@ -5,4 +5,7 @@
   /* MARGINS */
   --button-gap: 10px;
   --content-gap: 20px;
+
+  /* TEXT */
+  --tiny-font-size: 10px;
 }

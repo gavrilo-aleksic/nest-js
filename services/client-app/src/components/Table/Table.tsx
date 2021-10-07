@@ -8,6 +8,7 @@ import {
   TableRow,
   TableContainer,
 } from '@mui/material';
+import { isDefined } from '../../services/form.utils';
 
 interface AppTableProps {
   onClick?: (row: any) => void;
@@ -60,7 +61,9 @@ const AppTable = ({
                 <TableCell component="th" scope="row" align="right" key={index}>
                   {column.transform
                     ? column.transform(row[column.value])
-                    : row[column.value]}
+                    : isDefined(row[column.value])
+                    ? row[column.value].toString()
+                    : '-'}
                 </TableCell>
               ))}
             </TableRow>

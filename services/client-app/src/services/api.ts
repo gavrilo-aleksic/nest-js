@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Attribute } from './attribute.service';
 import { Organization } from './organization.service';
 
@@ -29,13 +29,13 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error: any) => {
+  (error: AxiosError<any>) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('jwt');
-      window.location.href = 'http://localhost:3001/login';
+      window.location.href = `${window.origin}/login`;
     }
-    if (handledErrorCodes.includes(error.response?.status)) {
-      return Promise.reject(error.response.data);
+    if (handledErrorCodes.includes(Number(error.response?.status))) {
+      return Promise.reject(error.response?.data);
     }
     return Promise.reject(error);
   },

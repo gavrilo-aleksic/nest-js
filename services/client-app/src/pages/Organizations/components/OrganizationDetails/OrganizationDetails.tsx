@@ -1,12 +1,12 @@
 import { Box } from '@mui/system';
-import { Organization } from '../../services/organization.service';
+import { Organization } from '../../../../services/organization.service';
 import React, { useContext } from 'react';
 import { Checkbox, FormControlLabel, TextField } from '@mui/material';
-import { getFormData } from '../../services/form.utils';
-import ActionButtons from '../ActionButtons';
+import { getFormData } from '../../../../services/form.utils';
+import ActionButtons from '../../../../components/ActionButtons';
 
 import './OrganizationDetails.css';
-import { UserContext } from '../../contexts/User.context';
+import { UserContext } from '../../../../contexts/User.context';
 interface OrganizationDetailsValues {
   name: string;
   displayName: string;

@@ -11,3 +11,8 @@ export const getFormData = <T extends Record<string, any>>(
   }
   return res;
 };
+
+type IDefinedType = boolean | string | number | object;
+
+export const isDefined = (value: any): value is IDefinedType =>
+  value !== undefined && value !== null;

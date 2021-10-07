@@ -9,3 +9,7 @@
 .MuiTableCell-root.MuiTableCell-head {
   font-weight: bold;
 }
+
+.MuiButtonBase-root.MuiIconButton-root {
+  border-radius: 4px;
+}

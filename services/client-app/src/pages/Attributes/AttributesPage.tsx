@@ -10,15 +10,14 @@ import {
   updateAttribute,
 } from '../../services/attribute.service';
 import { UserContext } from '../../contexts/User.context';
-// import AttributeDetails from '../../components/AttributeDetails/AttributeDetails';
 import AlertDialog from '../../components/AlertDialog';
-import { logout } from '../../services/auth.service';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DetailsList from '../../components/DetailsList/DetailsList';
 import Toast from '../../components/Toast';
 import { AttributeContext } from '../../contexts/Attribute.context';
 
 import './AttributesPage.css';
+import AttributeDetails from './components/AttributeDetails/AttributeDetails';
 
 const AttributesPage = () => {
   const { user } = useContext(UserContext);
@@ -38,14 +37,22 @@ const AttributesPage = () => {
   } | null>(null);
 
   const handleSubmitAttribute = async (values: Partial<Attribute>) => {
-    let orgId = values.id;
+    let attributeId = values.id;
     if (!values.id) {
       const newAttribute = await createAttribute(values);
       addAttribute(newAttribute);
-      orgId = newAttribute.id;
+      attributeId = newAttribute.id;
+      setToast({
+        variant: 'success',
+        text: `Attribute [${newAttribute?.name}] successfully created`,
+      });
     } else {
       const updatedAttribute = await updateAttribute(values);
       editAttribute(updatedAttribute);
+      setToast({
+        variant: 'success',
+        text: `Attribute [${updatedAttribute?.name}] successfully edited`,
+      });
     }
     setModalOpen(false);
   };
@@ -69,11 +76,8 @@ const AttributesPage = () => {
           columns={[
             { label: 'ID', value: 'id' },
             { label: 'Name', value: 'name' },
-            {
-              label: 'Created At',
-              value: 'createdAt',
-              transform: (value) => value.toLocaleDateString(),
-            },
+            { label: 'Type', value: 'type' },
+            { label: 'Required', value: 'required' },
             {
               label: 'Updated At',
               value: 'updatedAt',
@@ -122,22 +126,13 @@ const AttributesPage = () => {
           </Button>
         </div>
       </div>
-      {/* <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <AttributeDetails
           attribute={selectedAttribute}
           onSubmit={handleSubmitAttribute}
           onCancel={() => setModalOpen(false)}
         />
-      </Modal> */}
-      <AlertDialog
-        isOpen={alertType === 'CONFIRM_DEFAULT'}
-        title="Logout"
-        description="Once default attribute is changed, you will need to re-login"
-        onOk={() => {
-          setAlertType(null);
-          logout();
-        }}
-      />
+      </Modal>
       <AlertDialog
         isOpen={alertType === 'CONFIRM_DELETE'}
         title="Delete"
