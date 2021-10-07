@@ -10,7 +10,7 @@ import {
   updateAttribute,
 } from '../../services/attribute.service';
 import { UserContext } from '../../contexts/User.context';
-import AttributeDetails from '../../components/AttributeDetails/AttributeDetails';
+// import AttributeDetails from '../../components/AttributeDetails/AttributeDetails';
 import AlertDialog from '../../components/AlertDialog';
 import { logout } from '../../services/auth.service';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -122,13 +122,13 @@ const AttributesPage = () => {
           </Button>
         </div>
       </div>
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+      {/* <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <AttributeDetails
           attribute={selectedAttribute}
           onSubmit={handleSubmitAttribute}
           onCancel={() => setModalOpen(false)}
         />
-      </Modal>
+      </Modal> */}
       <AlertDialog
         isOpen={alertType === 'CONFIRM_DEFAULT'}
         title="Logout"

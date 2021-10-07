@@ -30,11 +30,11 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error: any) => {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       localStorage.removeItem('jwt');
       window.location.href = 'http://localhost:3001/login';
     }
-    if (handledErrorCodes.includes(error.response.status)) {
+    if (handledErrorCodes.includes(error.response?.status)) {
       return Promise.reject(error.response.data);
     }
     return Promise.reject(error);
