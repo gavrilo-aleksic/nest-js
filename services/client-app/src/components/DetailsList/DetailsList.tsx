@@ -5,7 +5,7 @@ import './DetailsList.css';
 interface DetailsListProps {
   items: {
     label?: string;
-    value?: string | number;
+    value?: string | number | boolean;
   }[];
 }
 

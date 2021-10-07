@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Attribute } from './attributes.service';
+import { Attribute } from './attribute.service';
 import { Organization } from './organization.service';
 
 const API_BASE_URL = 'http://localhost:3000';
@@ -85,6 +85,14 @@ const getAttributes = () => axiosInstance.get(`/attribute`).then((e) => e.data);
 const createAttribute = (attribute: Partial<Attribute>) =>
   axiosInstance.post(`/attribute`, attribute).then((e) => e.data);
 
+const updateAttribute = (attribute: Partial<Attribute>) =>
+  axiosInstance
+    .put(`/attribute/${attribute.id}`, attribute)
+    .then((e) => e.data);
+
+const deleteAttribute = (attributeId: number) =>
+  axiosInstance.delete(`/attribute/${attributeId}`).then((e) => e.data);
+
 const api = {
   login,
   getOrganizations,
@@ -96,6 +104,8 @@ const api = {
   updateOrganization,
   updateProfileOrganization,
   deleteOrganization,
+  updateAttribute,
+  deleteAttribute,
 };
 
 export default api;

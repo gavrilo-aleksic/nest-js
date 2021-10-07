@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import { Paper, Stack, Alert } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
-import { Attribute, fetchAttributes } from '../../services/attributes.service';
+import { Attribute, fetchAttributes } from '../../services/attribute.service';
 import { UserContext } from '../../contexts/User.context';
 import AppTable from '../../components/Table/Table';
 import Page from '../../components/Page/Page';

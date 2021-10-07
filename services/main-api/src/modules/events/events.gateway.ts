@@ -11,6 +11,10 @@ import { Socket, Server } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 
 const messagingProvider = 'events';
+interface IEventsGatewayMessage {
+  type: 'errorLog' | 'info';
+  message: any;
+}
 
 @WebSocketGateway({ cors: true })
 export class EventsGateway
@@ -41,7 +45,7 @@ export class EventsGateway
     this.verifyClient(client)
       .then((decoded: IJWT) => {
         this.logger.log(
-          `WS:// Client Connected: ${JSON.stringify({
+          `WS:// Client Connected: [${client.id}] -> ${JSON.stringify({
             id: decoded.sub,
             username: decoded.username,
           })}`,
@@ -59,17 +63,16 @@ export class EventsGateway
     }
     const token = client.handshake.headers.authorization;
     return this.jwtService.verifyAsync(token).catch((er) => {
-      this.sendToSpecificClient(client, 'INVALID AUTHENTICATION TOKEN');
       client.client._disconnect();
       return Promise.reject();
     });
   }
 
-  sendToSpecificClient(client: Socket, message: any) {
+  sendToSpecificClient(client: Socket, message: IEventsGatewayMessage) {
     client.emit(messagingProvider, message);
   }
 
-  sendToUser(sub: number, message: any) {
+  sendToUser(sub: number, message: IEventsGatewayMessage) {
     let client: Socket;
     this.server.sockets.sockets.forEach((socket) => {
       if (socket.data.sub === sub) {
@@ -77,7 +80,7 @@ export class EventsGateway
       }
     });
     if (client) {
-      this.sendToSpecificClient(client, JSON.stringify(message));
+      this.sendToSpecificClient(client, message);
     }
   }
 }

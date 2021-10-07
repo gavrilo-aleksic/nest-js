@@ -36,7 +36,10 @@ export class MongoDBService {
       date: new Date(),
       stack: value.stack,
     });
-    this.eventsGateway.sendToUser(value.user.sub, error);
+    this.eventsGateway.sendToUser(value.user.sub, {
+      type: 'errorLog',
+      message: error,
+    });
     return error.save();
   }
 }
