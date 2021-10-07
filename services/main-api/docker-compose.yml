@@ -4,6 +4,7 @@ services:
     container_name: main-api
     environment:
       - DATABASE_HOST=postgres
+      - MONGO_DB_CONNECTION=mongodb://root:password@mongodb:27017/
     depends_on:
       - database
     image: nestjs-api-dev:1.0.0
@@ -32,6 +33,14 @@ services:
       - main-network
     volumes:
       - database-data:/var/lib/postgresql/data/
+  mongo:
+    container_name: mongodb
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    networks:
+      - main-network
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
