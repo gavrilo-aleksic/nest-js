@@ -1,0 +1,22 @@
+{
+  "name": "generic-api",
+  "version": "1.0.0",
+  "description": "Generic API made with NestJS. Using PostgreSQL database.\r Basic React app as UI for API included",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "start:client": "cd services/client-app && npm run start",
+    "start:api": "cd services/main-app && npm run start:debug",
+    "start": "npm run start:client & npm run start:api",
+    "docker:start": "cd services/main-api && npm run docker:start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaharijeTest/nest-js.git"
+  },
+  "author": "galeksic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zaharijeTest/nest-js/issues"
+  },
+  "homepage": "https://github.com/zaharijeTest/nest-js#readme"
+}
