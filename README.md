@@ -1,14 +1,16 @@
-## Description
+# Description
 
 Generic API made with NestJS. Using PostgreSQL database.
 Basic React app as UI for API included
 
-# Installation
+## Installation
 
-- To start API in docker, use command `npm docker:build` from `/services/main-api` dir which will start PostgreSQL and NestJS application containers.
-  Hot Reload will work.
+### Docker
+  Project wraps NestJS, PostgreSQL and MongoDB in docker containers. To start API in docker, use command `npm docker:build` from `/services/main-api` dir to start containers. Hot reload for API will work.
 
+### Standard
 - To start API without docker, navigate to `/services/main-api` and run `npm run start:debug`. This will require you to have installed PostgreSQL server
   with database connection details matching `dev.env` file
 
-- To start client app, navigate to /services/client-app and run `npm run start`
+### Basic Client UI App
+  Simple Client App to demonstrate API capatibilities. Writen in React / Typescript. Client App is not possible to run in docker. To start client app, navigate to /services/client-app and run `npm run start`
